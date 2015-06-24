@@ -50,6 +50,17 @@ import DashTable
 myfile = "path/to/your/file.html"
 print(DashTable.main(myfile)
 ```
+
+* Test Files:
+
+there are into test_files folder:
+```import DashTable
+print(DashTable.main('simple_input.html')  # a simple html table
+print(DashTable.main('colspan_input.html')  # a html table with colspan cells
+print(DashTable.main('rowspan_input.html')  # a html table with rowspan cells
+print(DashTable.main('colspanANDrowspan_input.html')  # Rowspan AND colspan, both of them!
+```
+
 # Inner working:
 there's an 'html2list.py' module which extract the raw data from the table and the specific rowspan and colspan of each cell.
 Then, the magic is done thanks to the dashtable.py! Give it these 3 data lists and a string (the ASCII table) is returned.
@@ -63,14 +74,6 @@ ReST is perfect formatting, a bit like the formatting you can get with the brows
 ```
 which is difficult to read usually...
 
-* Test Files:
-there are into test_files folder:
-```import DashTable
-print(DashTable.main('simple_input.html')  # a simple html table
-print(DashTable.main('colspan_input.html')  # a html table with colspan cells
-print(DashTable.main('rowspan_input.html')  # a html table with rowspan cells
-print(DashTable.main('colspanANDrowspan_input.html')  # Rowspan AND colspan, both of them!
-```
 
 
 ## Contributors
