@@ -2,7 +2,7 @@ DashTable
 =========
 HTML table to ASCII table, colspan & Rowspan allowed!
 
-## What this package is used for?
+## What is this package used for?
 
 There are some ASCII table creator out there.
 For those who don't know, an ASCII table is like:
