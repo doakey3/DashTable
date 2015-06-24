@@ -51,6 +51,15 @@ print(DashTable.main(myfile)
 # Inner working:
 there's an 'html2list.py' module which extract the raw data from the table and the specific rowspan and colspan of each cell.
 Then, the magic is done thanks to the dashtable.py! Give it these 3 data lists and a string (the ASCII table) is returned.
+ReST is perfect formatting, a bit like the formatting you can get with the browser, but without need of it, and especially, no need of:
+```
+  <tr>
+  <td>Jack</td>
+  <td colspan=2 rowspan=2>Undisclosed</td>
+  <td>graphist</td>
+  </tr>
+```
+which is difficult to read usually...
 
 ## Contributors
 
