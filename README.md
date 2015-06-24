@@ -55,7 +55,8 @@ print(DashTable.main(myfile)
 
 there are into test_files folder:
 
-```import DashTable
+```
+import DashTable
 print(DashTable.main('simple_input.html')  # a simple html table
 print(DashTable.main('colspan_input.html')  # a html table with colspan cells
 print(DashTable.main('rowspan_input.html')  # a html table with rowspan cells
