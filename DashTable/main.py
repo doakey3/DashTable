@@ -7,13 +7,11 @@
 """
 
 from bs4 import BeautifulSoup
-import table2list
+import dashtable
+import html2list
 
 
 # get the table
-soup = BeautifulSoup(open('input.html', encoding='utf-8'))
-table = soup.find('table')
-# convert table to dict with list and rowspan, and colspan
-my_dict = table2list.table2list(table)
-
-print(my_dict)
+datalist, rowspan_list, colspan_list = html2list.html2list("file_path")
+#  result = table_list_to_ascii(table, colspan_list, rowspan_list)
+result = dashtable.table_list_to_ascii(datalist, rowspan_list, colspan_list)

@@ -101,13 +101,13 @@ def html2list(file):
             colspan_list[-1].append(cell['colspan'])
     data_list = simplify_dictlist(data_list)            
     
-    print(data_list)
-    print("rowspan ={}".format(rowspan_list))
-    print("colspan ={}".format(colspan_list))
+#     print(data_list)
+#     print("rowspan ={}".format(rowspan_list))
+#     print("colspan ={}".format(colspan_list))
     return (data_list, rowspan_list, colspan_list)
 
 if __name__ == "__main__":
-#     html2list("simple_input.html")
-#     html2list("colspan_input.html")
-    html2list("rowspan_input.html")
-#     html2list("colspanANDrowspan_input.html")
+#     html2list("test_files/simple_input.html")
+#     html2list("test_files/colspan_input.html")
+    html2list("test_files/rowspan_input.html")
+#     html2list("test_files/colspanANDrowspan_input.html")
