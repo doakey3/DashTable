@@ -36,6 +36,8 @@ This package needs only one depency: Beautisoup4. It's a scaper (it extracts use
 ```
 pip install beautifulsoup4
 ```
+then, you can download the source here, or using pip:
+```pip install DashTable`
 
 ## Using it:
 
@@ -60,6 +62,16 @@ ReST is perfect formatting, a bit like the formatting you can get with the brows
   </tr>
 ```
 which is difficult to read usually...
+
+* Test Files:
+there are into test_files folder:
+```import DashTable
+print(DashTable.main('simple_input.html')  # a simple html table
+print(DashTable.main('colspan_input.html')  # a html table with colspan cells
+print(DashTable.main('rowspan_input.html')  # a html table with rowspan cells
+print(DashTable.main('colspanANDrowspan_input.html')  # Rowspan AND colspan, both of them!
+```
+
 
 ## Contributors
 
