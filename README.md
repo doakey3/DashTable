@@ -7,6 +7,7 @@ HTML table to ASCII table, colspan & Rowspan allowed!
 There are some ASCII table creator out there.
 For those who don't know, an ASCII table is like:
 
+```
 +------------------------+------------+----------+----------+
 | Header row, column 1   | Header 2   | Header 3 | Header 4 |
 | (header rows optional) |            |          |          |
@@ -19,6 +20,7 @@ For those who don't know, an ASCII table is like:
 +------------------------+ span rows. | - contain           |
 | body row 4             |            | - body elements.    |
 +------------------------+------------+---------------------+
+```
 
 But, for all of them, I didn't find any rowspan or colspan integration! (If you look on the 3rd row, second column, you can see that the column spans 3 other columns. That's a Colspan=3).
 
