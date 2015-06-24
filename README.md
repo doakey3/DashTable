@@ -1,3 +1,8 @@
+DashTable
+=========
+HTML table to ASCII table, colspan & Rowspan allowed!
+-----------------------------------------------------
+
 ## What this package is used for?
 
 There are some ASCII table creator out there.
