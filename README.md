@@ -22,7 +22,7 @@ For those who don't know, an ASCII table is like:
 +------------------------+------------+---------------------+
 ```
 
-But, for all of them, I didn't find any rowspan or colspan integration! (If you look on the 3rd row, second column, you can see that the column spans 3 other columns. That's a Colspan=3).
+But, for all of them, I didn't find any **rowspan** or **colspan** integration! (If you look on the 3rd row, second column, you can see that the column spans 3 other columns. That's a `Colspan=3`).
 
 So, I decide to create it myself!
 
