@@ -31,18 +31,21 @@ Basically, you can give to certain programs Rest-formatted tables (i.e ASCII tab
 ## Installation
 
 This package needs only one depency: Beautisoup4. It's a scaper (it extracts useful data from html file: here, it extracts cells from HTML table): http://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-beautiful-soup
-*pip install beautifulsoup4*
+```
+pip install beautifulsoup4
+```
 
 ## Using it:
 
 It uses as input an html file whith a table inside (in HTML format of course)
 then:
 
+```python
 import DashTable
 
 myfile = "path/to/your/file.html"
 print(DashTable.main(myfile)
-
+```
 # Inner working:
 there's an 'html2list.py' module which extract the raw data from the table and the specific rowspan and colspan of each cell.
 Then, the magic is done thanks to the dashtable.py! Give it these 3 data lists and a string (the ASCII table) is returned.
