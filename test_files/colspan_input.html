@@ -1,0 +1,32 @@
+<table border=1>
+  <caption>A test table witd merged cells</caption>
+  <tr>
+  <td>Name</td>
+  <td colspan=2>Features</td>
+  <td colspan=2>Job</td>
+  </tr>
+  <tr>
+  <td>Jack</td>
+  <td>1.9m</td>
+  <td>75Kg</td>
+  <td>graphist</td>
+  <td>gardener</td>
+  </tr>
+  <tr>
+  <td colspan=3>Other features</td>
+  <td>developer</td>
+  <td>painter</td>
+  </tr>
+</table>
+
+<!--  expected result:
+          A test table witd merged cells
++----------+-------------------+----------+-----------+
+| Name     |      Features     |         Jobs         |
++----------+---------+---------+----------+-----------+
+| Jack     |   1.9m  |  75Kg   | graphist | gardener  |
+|----------+---------+---------+----------+-----------+
+|        Other features        | developer| painter   |
++----------+---------+---------+----------+-----------+
+
+-->

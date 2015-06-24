@@ -1,0 +1,45 @@
+<table border=1>
+  <caption>A test table witd merged cells</caption>
+  <tr>
+  <td rowspan=2>Name</td>
+  <td>size</td>
+  <td>Kg</td>
+  <td rowspan=2>Job</td>
+  </tr>
+  <tr>
+  <td>height</td>
+  <td>weight</td>
+  </tr>
+  <tr>
+  <td rowspan=3>Other</td>
+  <td>1.9m</td>
+  <td>75Kg</td>
+  <td>graphist</td>
+  </tr>
+  <tr>
+  <td>1.7m</td>
+  <td>56Kg</td>
+  <td>developer</td>
+  </tr>
+  <tr>
+  <td>2.0m</td>
+  <td>80Kg</td>
+  <td>algorist</td>
+  </tr>
+</table>
+
+<!--  expected result:
+          A test table witd merged cells
++----------+---------+---------+----------+
+|          |  size   |  Kg     |          | 
+| Name     +---------+---------+  job     |
+|          |  height |  weight |          |
++----------+---------+---------+----------+
+|          |   1.9m  |  75Kg   | graphist |
+|  Other   +---------+---------+----------+
+|          |   1.7m  |  56Kg   | developer|
+|          +---------+---------+----------+
+|          |   2.0m  |  80Kg   | algorist |
++----------+---------+---------+----------+
+
+-->

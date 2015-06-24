@@ -1,0 +1,42 @@
+<table border=1>
+  <caption>A test table witd merged cells</caption>
+  <tr>
+  <td>Name</td>
+  <td>Height</td>
+  <td>Weight</td>
+  <td>Jobs</td>
+  <td>Hobby</td>
+  </tr>
+  <tr>
+  <td>Jack</td>
+  <td colspan=2 rowspan=2>Undisclosed</td>
+  <td>graphist</td>
+  <td>gardener</td>
+  </tr>
+  <tr>
+  <td>Frank</td>
+  <td>developer</td>
+  <td>painter</td>
+  </tr>
+  <tr>
+  <td>Jenny</td>
+  <td>1.6m</td>
+  <td>52Kg</td>
+  <td>commercial</td>
+  <td>jogger</td>
+  </tr>
+</table>
+
+<!--  expected result:
+          A test table with merged cells
++----------+---------+---------+------------+-----------+
+| Name     | Height  |  Weight |   Jobs     |  Hobby    |
++----------+---------+---------+------------+-----------+
+| Jack     |   Undisclosed     | graphist   | gardener  |
+|----------+                   +------------+-----------+
+| Frank    |                   | developer  | painter   |
++----------+---------+---------+------------+-----------+
+| Jenny    |  1.6m   |   52Kg  | commercial | jogger    |
++----------+---------+---------+------------+-----------+
+
+-->
