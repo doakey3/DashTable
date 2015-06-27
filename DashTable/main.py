@@ -6,12 +6,12 @@
     - texttable: to convert a list into ascii table
 """
 
-from bs4 import BeautifulSoup
-import dashtable
-import html2list
+from . import dashTable
+from . import html2list
 
-
-# get the table
-datalist, rowspan_list, colspan_list = html2list.html2list("file_path")
-#  result = table_list_to_ascii(table, colspan_list, rowspan_list)
-result = dashtable.table_list_to_ascii(datalist, rowspan_list, colspan_list)
+def main(file_path):
+    # get the table
+    datalist, rowspan_list, colspan_list = html2list.html2list(file_path)
+    #  result = table_list_to_ascii(table, colspan_list, rowspan_list)
+    result = dashTable.table_list_to_ascii(datalist, rowspan_list, colspan_list)
+    return result

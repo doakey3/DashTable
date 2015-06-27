@@ -29,6 +29,16 @@ So, I decide to create it myself!
 (Maybe you're asking what the point of ASCII table? The thing is, it's useful for example for ReST formatting ( http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables ).
 Basically, you can give to certain programs Rest-formatted tables (i.e ASCII table) and voilà: superb formating to be displayed)
 
+ReST is perfect formatting, a bit like the formatting you can get with the browser, but without need of it, and especially, no need of:
+```
+  <tr>
+  <td>Jack</td>
+  <td colspan=2 rowspan=2>Undisclosed</td>
+  <td>graphist</td>
+  </tr>
+```
+which is difficult to read usually...
+
 
 ## Installation
 
@@ -37,7 +47,7 @@ This package needs only one depency: Beautisoup4. It's a scaper (it extracts use
 pip install beautifulsoup4
 ```
 then, you can download the source here, or using pip:
-```pip install DashTable`
+`pip install DashTable`
 
 ## Using it:
 
@@ -56,17 +66,24 @@ print(DashTable.main(myfile)
 there are into test_files folder:
 
 ```python
-import DashTable
-print(DashTable.main('simple_input.html')  # a simple html table
-print(DashTable.main('colspan_input.html')  # a html table with colspan cells
-print(DashTable.main('rowspan_input.html')  # a html table with rowspan cells
-print(DashTable.main('colspanANDrowspan_input.html')  # Rowspan AND colspan, both of them!
+from DashTable.main import main
+print(main('test_files/simple_input.html')  # a simple html table
+print(main('test_files/colspan_input.html')  # a html table with colspan cells
+print(main('test_files/rowspan_input.html')  # a html table with rowspan cells
+print(main('test_files/colspanANDrowspan_input.html')  # Rowspan AND colspan, both of them!
 ```
 
+The `main` module does all the work: see below.
+If you want, you can use only the html2list module (and return so only the 3 lists described below, or only the dashTable module.
+
 # Inner working:
-there's an 'html2list.py' module which extract the raw data from the table and the specific rowspan and colspan of each cell.
-Then, the magic is done thanks to the dashtable.py! Give it these 3 data lists and a string (the ASCII table) is returned.
-ReST is perfect formatting, a bit like the formatting you can get with the browser, but without need of it, and especially, no need of:
+The `main` module calls the `html2llist` module, than the `dashTable` module:
+
+* the `html2list` module :
+It extract the raw data from the table and the specific rowspan and colspan of each cell.
+it returns 3 lists: one with the data and the 2 others describing the colspan and rowspan cells.
+
+for ex.:
 ```
   <tr>
   <td>Jack</td>
@@ -74,8 +91,15 @@ ReST is perfect formatting, a bit like the formatting you can get with the brows
   <td>graphist</td>
   </tr>
 ```
-which is difficult to read usually...
+will be converted to: 
+```python
+data_list = ['Jack','Undisclosed','', 'graphist'] 
+rowspan_list = [0, 0, 0, 0] #no colspan, basically
+colspan_list = [0, 1, 1, 0]
+ ``` 
 
+* the `dashTable` module :
+Give it these 3 data lists and a string (the ASCII table) is returned.
 
 
 ## Contributors
