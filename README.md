@@ -108,4 +108,4 @@ If you have some suggestions, critics, problems to make it work in your special 
 
 ## License
 
-GPL
+GNU General Public License
