@@ -42,7 +42,7 @@ which is difficult to read usually...
 
 ## Installation
 
-This package needs only one depency: Beautisoup4. It's a scaper (it extracts useful data from html file: here, it extracts cells from HTML table): http://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-beautiful-soup
+This package needs only one dependency: BeautiSoup 4. It's a scraper (it extracts useful data from html file: here, it extracts cells from HTML table): http://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-beautiful-soup
 ```
 pip install beautifulsoup4
 ```
@@ -108,4 +108,4 @@ If you have some suggestions, critics, problems to make it work in your special 
 
 ## License
 
-LGPL
+GPL
