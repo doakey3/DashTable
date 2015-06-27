@@ -1,9 +1,6 @@
 """ Program to convert an html file (example: input.html) with a table inside it
     to an ASCII table.
     Caveats: take into consideration the spans: rowspan and columnspan
-    modules used: 
-    - beautifulsoup: to get the table inside HTML
-    - texttable: to convert a list into ascii table
 """
 
 from . import dashTable
