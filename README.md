@@ -55,10 +55,10 @@ It uses as input an html file whith a table inside (in HTML format of course)
 then:
 
 ```python
-import DashTable
+from DashTable.main import main
 
 myfile = "path/to/your/file.html"
-print(DashTable.main(myfile)
+print(main(myfile))
 ```
 
 ## Test Files:
