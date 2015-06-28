@@ -118,7 +118,7 @@ def colspan_converter(table, colspan_list, width):
             # at each end of for loop (i.e. end of processing each cell), we actualize the previouscolspan_nb
             previouscolspan_nb = cell
 
-def create_separator(row_index, width, widthwithzero, rowspan_list, colspan_list):
+def create_separator(row_index, width, widthwithzero, rowspan_list, colspan_list, lastsep=False):
     """calculate the separator for the *next* row: take the row number, look what the width is, 
     and give back the 'sep' special problem: if there's colspan, the '+' dispappear: 
     not recognized by ReST. solution: try to find the row BEFORE (and not AFTER) where there is no colspan
@@ -126,7 +126,14 @@ def create_separator(row_index, width, widthwithzero, rowspan_list, colspan_list
              |  aa |   bb  |  cc  |  hhh |
              +-----+--------------+------+  Not good!
              |  dd |     dddd     |  ii  |
-             +-----+--------------+------+"""
+             +-----+--------------+------+
+    lastsep is an option: when doing: (problem with the last sep when the row before is rowspan)
+             +-----+-------+------+------+
+             |  aa |   bb  |  cc  |  hhh |
+             +     +-------+------+------+  Not good!
+             |  dd |  dddd |  ee  |  ii  |
+             +     +-------+------+------+
+    """
     sep = ""
     # it 's the first row: always display the next row (always no problem for the first row)
     if row_index == 0:
@@ -144,9 +151,10 @@ def create_separator(row_index, width, widthwithzero, rowspan_list, colspan_list
             """we're using a dashORspace: place holder for '-' or ' ' (useful for table with colspan AND rowspan associated)"""
             """ First, we deal with rowspan :"""
             # check whether the row can have rowspan:
-            # its rowspan!= 0 and it's the same number. 
+            # its rowspan!= 0 and it's the same number. It must not be  
             if rowspan_list[row_index][idx_col] != 0 and \
-                rowspan_list[row_index][idx_col] == rowspan_list[row_index -1][idx_col]:
+                rowspan_list[row_index][idx_col] == rowspan_list[row_index -1][idx_col] and \
+                not lastsep:
                 dashORspace = ' '
 #                 sep += "+" + ' '*width[row_index][idx_col]
             else:
@@ -211,7 +219,7 @@ def check_not_empty(lst):
             return True
     return False
 
-def table_list_to_ascii(table, colspan_list, rowspan_list):
+def table_list_to_ascii(table, rowspan_list, colspan_list):
     """main function"""
     # determine the biggest cell in each column.
     column_size = []
@@ -275,8 +283,8 @@ def table_list_to_ascii(table, colspan_list, rowspan_list):
             row = remainder
             table_row = [row]
         result += "\n" 
-    # last row, print the sep:
-    result += create_separator(len(table) -1, width, widthwithzero, rowspan_list, colspan_list)
+    # last row, print the sep: using the "lastsep=True" option!
+    result += create_separator(len(table) -1, width, widthwithzero, rowspan_list, colspan_list, lastsep=True)
                                 
     return result
 
@@ -423,14 +431,14 @@ if __name__ == "__main__":
 #              ['xx', '', 'yyy'],
 #              ['ff', 'gggg', 'hhhh'],
 #              ['iiii','','jj'],
-#              ['k','ll','mm']
+#              ['','ll','mm']
 #              ]
 #     rowspan_list = [[0, 1, 0], 
 #                     [0, 1, 0],
 #                     [0, 1, 0],
 #                     [0, 2, 0],
-#                     [0, 2, 0],
-#                     [0, 0, 0],
+#                     [3, 2, 0],
+#                     [3, 0, 0],
 #                     ]
 #     colspan_list = [[0, 0, 0], 
 #                     [0, 0, 0],
@@ -439,30 +447,36 @@ if __name__ == "__main__":
 #                     [0, 0, 0],
 #                     [0, 0, 0]]
 
-    """test_rowspan_AND_colspan_THE_ULTIMATE_TEST"""
-    table = [
-             ['aa', 'bbb', 'cc', 'zzzzzz'], 
-             ['dd', 'ee', '', 'nnn'],
-             ['xx', '', '', 'ooooo'],
-             ['ff', 'gggg', 'h', 'ss'],
-             ['iiii','r','jj', 'tttttt'],
-             ['k','ll','mm', 'uuu']
-             ]
-    rowspan_list = [
-                    [0, 0, 0, 0], 
-                    [0, 1, 1, 0],
-                    [0, 1, 1, 0],
-                    [0, 0, 0, 0],
-                    [0, 0, 0, 0],
-                    [0, 0, 0, 0]
-                    ]
-    colspan_list = [
-                    [0, 0, 0, 0], 
-                    [0, 1, 1, 0],
-                    [0, 1, 1, 0],
-                    [0, 0, 0, 0],
-                    [0, 0, 0, 0],
-                    [0, 0, 0, 0]
-                    ]
-    result = table_list_to_ascii(table, colspan_list, rowspan_list)
+#     """test_rowspan_AND_colspan_THE_ULTIMATE_TEST"""
+#     table = [
+#              ['aa', 'bbb', 'cc', 'zzzzzz'], 
+#              ['dd', 'ee', '', 'nnn'],
+#              ['xx', '', '', 'ooooo'],
+#              ['ff', 'gggg', 'h', 'ss'],
+#              ['iiii','r','jj', 'tttttt'],
+#              ['k','ll','mm', 'uuu']
+#              ]
+#     rowspan_list = [
+#                     [0, 0, 0, 0], 
+#                     [0, 1, 1, 0],
+#                     [0, 1, 1, 0],
+#                     [0, 0, 0, 0],
+#                     [0, 0, 0, 0],
+#                     [0, 0, 0, 0]
+#                     ]
+#     colspan_list = [
+#                     [0, 0, 0, 0], 
+#                     [0, 1, 1, 0],
+#                     [0, 1, 1, 0],
+#                     [0, 0, 0, 0],
+#                     [0, 0, 0, 0],
+#                     [0, 0, 0, 0]
+#                     ]
+    
+    """ colspan and rowspan, mixed"""
+    table = [['aaaa', 'COLSPAN', '', 'ROWSPAN'], ['jj', 'under_COLSPAN1', 'under_COLSPAN2', ''], ['fff', 'kk', 'hhhhh', 'iii']]
+    rowspan_list = [[0, 0, 0, 1], [0, 0, 0, 1], [0, 0, 0, 0]]
+    colspan_list = [[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]] 
+
+    result = table_list_to_ascii(table, rowspan_list, colspan_list)
     print(result)

@@ -7,14 +7,13 @@ and the last one with the colspan
 
 from bs4 import BeautifulSoup
 
-def simplify_dictlist(datalist):
-    """ lots of useless data for the dashtable.py: we keep only used data inside"""
-    my_table = []
-    for row in datalist:
-        my_table.append([])
-        for col in row:
-            my_table[-1].append(col['in'])
-    return my_table
+
+def already_exists(idx_row, idx_col, row):
+    """ helper for html2list main.
+    check in the row of the datalist if an element with the given idx already exists. """
+    for element in row:
+        if element['idx'][0] == idx_row and element['idx'][1] == idx_col:
+            return True
 
 def html2list(file):
     """ main function """
@@ -56,58 +55,96 @@ def html2list(file):
     colspan_idx = 1
     rowspan_idx = 1
     ####################################################################################
-    # then, deal with the rowspan (first) and colspan (after)..                        #
+    # then, deal with the rowspan and colspan (simultaneously)..                        #
     ####################################################################################
-    # Fist, detect rowspan :
+    # we use another list where the span will be correct (and index are in the dict)
+    span_datalist = []
+    curr_idx_row = -1 # because the list begins at -1! 
     for idx_row, row in enumerate(data_list):
+        curr_idx_row += 1 
+        curr_idx_col = -1 # because the list begins at -1! 
         for idx_col, col in enumerate(row):
-            if col['rowspan'] != 0 and not col['rowspan_added']:
-                for cspan_nb in range(col['rowspan_nb']-1): # check whether it's 'rowspan=2' or 'rowspan=3' etc...
-                    if col['colspan'] == 0:
-                        data_list[idx_row+1+cspan_nb].insert(idx_col, {'in': "", 'rowspan': rowspan_idx, 'rowspan_added': True,\
-                                                                    'colspan':0, 'colspan_added':False})
-                    else:
-                        data_list[idx_row+1+cspan_nb].insert(idx_col, {'in': "", 'rowspan': rowspan_idx, 'rowspan_added': True,\
-                                                                    'colspan':col['colspan'], 'colspan_added':True})
+            curr_idx_col += 1
+
+            # loop to check if the index already exists (created with rowspan)
+            already_exist_token = True
+            while already_exist_token:
+                if already_exists(curr_idx_row, curr_idx_col, span_datalist):
+                    curr_idx_col +=1
+                else:
+                    already_exist_token = False
+                
+
+            # Then we check for the rowspan and colspan (or both)
+            # *special case* : it's a colspan AND rowspan cell:
+            if col['rowspan'] != 0 and col['colspan'] != 0:
+                # update the rowspan_idx field in the initial cell:
+                span_datalist.append({'in':col['in'], 'idx':[curr_idx_row, curr_idx_col],\
+                                  'colspan_idx':colspan_idx, 'rowspan_idx':rowspan_idx})
+                row_to_change = col['rowspan_nb'] # the nb of row that the colspan must be applied to
+                for rspan_nb in range(col['rowspan_nb']-1): # check whether it's 'rowspan=2' or 'rowspan=3' etc...
+                    span_datalist.append({'in': "", 'idx':[curr_idx_row+1+rspan_nb, curr_idx_col],\
+                                          'rowspan_idx': rowspan_idx, 'colspan_idx': colspan_idx})
+                alt_curr_idx_col = curr_idx_col
+                for row_to_change in range(col['rowspan_nb']):# the nb of row that the colspan must be applied to
+                    for cspan_nb in range(col['colspan_nb']-1): # we modify the number of cells specified in the html colspan=XX
+                        span_datalist.append({'in': "", 'idx':[curr_idx_row+row_to_change, curr_idx_col+1+cspan_nb], \
+                                              'colspan_idx': colspan_idx, 'rowspan_idx':rowspan_idx})
+                        if row_to_change == 0: # don't increase when the colspan loop is adding new col on other rows.
+                            alt_curr_idx_col += 1 # the idx is increased since a cell was added
+                curr_idx_col = alt_curr_idx_col
+                colspan_idx += 1
                 rowspan_idx += 1
 
-    # then, detect colspan
-    for idx_row, row in enumerate(data_list):
-        for idx_col, col in enumerate(row):
-            # Case: it's a colspan AND the cell wasn't added during the rowspan phase:
-            if col['colspan'] != 0 and not col['colspan_added']:
+            # is it a rowspan cell?
+            elif col['rowspan'] != 0:
+                # update the rowspan_idx field in the initial cell:
+                span_datalist.append({'in':col['in'], 'idx':[curr_idx_row, curr_idx_col],\
+                                  'colspan_idx':0, 'rowspan_idx':rowspan_idx})
+                for rspan_nb in range(col['rowspan_nb']-1): # check whether it's 'rowspan=2' or 'rowspan=3' etc...
+                    span_datalist.append({'in': "", 'idx':[curr_idx_row+1+rspan_nb, curr_idx_col],\
+                                          'rowspan_idx': rowspan_idx, 'colspan_idx':0})
+                rowspan_idx += 1
+            #it's a colspan cell
+            elif col['colspan'] != 0:
+                # update the rowspan_idx field in the initial cell:
+                span_datalist.append({'in':col['in'], 'idx':[curr_idx_row, curr_idx_col],\
+                                  'colspan_idx':colspan_idx, 'rowspan_idx':0})
                 for cspan_nb in range(col['colspan_nb']-1): # we modify the number of cells specified in the html colspan=XX
-                    # Modify the Data_list :
-                    try: # we're trying because maybe the cell already exist (created during rowspan phase):
-                        for rspan_nb in range(col['rowspan_nb']):
-                            data_list[idx_row+rspan_nb].insert(idx_col+1, {'in': "", 'colspan': colspan_idx, 'colspan_added': True,\
-                                                              'rowspan': col['rowspan'], 'rowspan_added': False})
-                    except:
-                        data_list[idx_row+rspan_nb].append({'in': "", 'colspan': colspan_idx, 'colspan_added': True,\
-                                                              'rowspan': rowspan_idx, 'rowspan_added': False})
+                    span_datalist.append({'in': "", 'idx':[curr_idx_row, curr_idx_col+1+cspan_nb], \
+                                          'colspan_idx': colspan_idx, 'rowspan_idx':0})
+                    curr_idx_col += 1 # the idx is increased since a cell was added
                 colspan_idx += 1
+            # 'normal' case:
+            else:
+                span_datalist.append({'in':col['in'], 'idx':[curr_idx_row, curr_idx_col],\
+                                  'colspan_idx':0, 'rowspan_idx':0})
+                
 
-    #####################################################################################################
-    #    Creating the colspan and rowspan from the datalist (now that it has the correct list number
-    #####################################################################################################
-#     print(data_list)
-    rowspan_list = []
+    span_datalist = sorted(span_datalist, key=lambda k: k['idx']) 
+    # creating datalist, rowspan_list and colspan_list:
+    datalist = []
     colspan_list = []
-    for idx_row, row in enumerate(data_list):
-        rowspan_list.append([])
-        colspan_list.append([])
-        for cell in row:
-            rowspan_list[-1].append(cell['rowspan'])           
-            colspan_list[-1].append(cell['colspan'])
-    data_list = simplify_dictlist(data_list)            
-    
-#     print(data_list)
-#     print("rowspan ={}".format(rowspan_list))
-#     print("colspan ={}".format(colspan_list))
-    return (data_list, rowspan_list, colspan_list)
+    rowspan_list = []
+    idx_row = -1 # list begins at 0!
+    for element in span_datalist:
+        if idx_row != element['idx'][0]: # add a new row
+            datalist.append([])
+            colspan_list.append([])
+            rowspan_list.append([])
+            idx_row += 1
+        datalist[-1].append(element['in'])
+        rowspan_list[-1].append(element['rowspan_idx'])
+        colspan_list[-1].append(element['colspan_idx'])
+    return(datalist, rowspan_list, colspan_list)
 
 if __name__ == "__main__":
-#     html2list("test_files/simple_input.html")
-#     html2list("test_files/colspan_input.html")
-    html2list("test_files/rowspan_input.html")
-#     html2list("test_files/colspanANDrowspan_input.html")
+#     result = html2list("../test_files/simple_input.html")
+#     result = html2list("../test_files/colspan_input.html")
+#     result = html2list("../test_files/rowspan_input.html")
+#     result = html2list("../test_files/simplerowspan_input.html")
+#     result = html2list("../test_files/colspanANDrowspan_input.html")
+    result = html2list("../test_files/colspanANDrowspan2.html")
+    for i in result:
+        print(i)
+    
