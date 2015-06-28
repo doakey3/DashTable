@@ -61,6 +61,9 @@ myfile = "path/to/your/file.html"
 print(main(myfile))
 ```
 
+* Note :
+You can use as input html file but also string if you want (the module will detect whether it's an "*.html" input or only a string).
+
 ## Test Files:
 
 there are into test_files folder:
