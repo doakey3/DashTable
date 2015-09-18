@@ -7,4 +7,5 @@ setup(name='DashTable',
       description='A library for converting a HTML table into an ASCII table',
       url='https://github.com/gustavklopp/DashTable',
       packages=['DashTable'],
+      install_requires=['beautifulsoup4']
 )
