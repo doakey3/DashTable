@@ -1,3 +1,7 @@
 .pydevproject
 __pycache__
 .project
+*.pyc
+/dist
+/build
+/DashTable.egg-info
