@@ -19,9 +19,9 @@ def html2list(file):
     """ main function """
     # we can input a file but even a string!
     if file.rsplit('.', 1)[-1] == "html":
-        soup = BeautifulSoup(open(file))
+        soup = BeautifulSoup(open(file), 'html.parser')
     else:
-        soup = BeautifulSoup(file) # the 'file' is actually a string probably
+        soup = BeautifulSoup(file, 'html.parser') # the 'file' is actually a string probably
     table = soup.find('table')
     data_list = []
     rowspan_idx = 1
