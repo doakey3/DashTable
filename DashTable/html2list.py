@@ -18,7 +18,7 @@ def already_exists(idx_row, idx_col, row):
 def html2list(file):
     """ main function """
     # we can input a file but even a string!
-    if file.rsplit('.', 1) == "html":
+    if file.rsplit('.', 1)[-1] == "html":
         soup = BeautifulSoup(open(file))
     else:
         soup = BeautifulSoup(file) # the 'file' is actually a string probably
