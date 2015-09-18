@@ -43,11 +43,11 @@ which is difficult to read usually...
 ## Installation
 
 This package needs only one dependency: BeautiSoup 4. It's a scraper (it extracts useful data from html file: here, it extracts cells from HTML table): http://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-beautiful-soup
-```
-pip install beautifulsoup4
-```
-then, you can download the source here, or using pip:
+
+BeautifulSoup is installed automatically if you download the source and run `python setup.py install` or install DashTable with pip:
 `pip install DashTable`
+
+Note that you need the setuptools package to install DashTable.
 
 ## Using it:
 

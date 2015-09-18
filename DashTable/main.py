@@ -16,10 +16,19 @@ def main(file_path):
     result = dashTable.table_list_to_ascii(datalist, rowspan_list, colspan_list)
     return result
 
+def cmdline():
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument('input_file', action='store', help='The HTML file to convert')
+    opts = parser.parse_args()
+    print(main(opts.input_file))
+
 if __name__ == "__main__":
+    cmdline()
+
 #     print(main("../test_files/simple_input.html"))
 #     print(main("../test_files/colspan_input.html"))
 #     print(main("../test_files/rowspan_input.html"))
 #     print(main("../test_files/simplerowspan_input.html"))
 #     print(main("../test_files/colspanANDrowspan_input.html"))
-    print(main("../test_files/colspanANDrowspan2.html"))
+#     print(main("../test_files/colspanANDrowspan2.html"))
