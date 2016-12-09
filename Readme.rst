@@ -55,6 +55,8 @@ pip. Like this:
 Next, install DashTable by downloading it, changing directory to the
 DashTable folder and running this command:
 
+.. code-block
+
     python setup.py install
 
 Usage
@@ -76,6 +78,8 @@ the first row), but you want your ASCII table to use headers, you can
 set the "force_headers" option to true.
 
 html2rst can also be used from the command line like this:
+
+.. code-block
 
     python html2rst.py input.html output.rst
 
