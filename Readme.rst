@@ -46,7 +46,7 @@ Installation
 This package requires `Beautiful Soup 4`_ which can be installed with
 pip. Like this:
 
-.. code-block:: python
+::
 
     pip install bs4
 
@@ -55,7 +55,7 @@ pip. Like this:
 Next, install DashTable by downloading it, changing directory to the
 DashTable folder and running this command:
 
-.. code-block
+::
 
     python setup.py install
 
@@ -79,7 +79,7 @@ set the "force_headers" option to true.
 
 html2rst can also be used from the command line like this:
 
-.. code-block
+::
 
     python html2rst.py input.html output.rst
 
