@@ -72,9 +72,17 @@ example:
     filepath = "path/to/html/file.html"
     print(html2rst(filepath, force_headers=False))
 
-If you have an html table that does not have headers
-(<td> instead of <th> on the first row), but you want your ASCII table
-to use headers, you can set the "force_headers" option to true.
+You may use a filepath or a string as the input for the function. If you
+have an html table that does not have headers (<td> instead of <th> on
+the first row), but you want your ASCII table to use headers, you can
+set the "force_headers" option to true.
+
+html2rst can also be used from the command line like this:
+
+..code-block::
+
+    python html2rst.py input.html output.rst
+
 
 Licence
 -------
