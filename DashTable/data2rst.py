@@ -300,7 +300,7 @@ def addCushions(table):
     return table
 
 
-def generateRstTable(table, spans=[[[0, 0]]], use_headers=True):
+def makeRstTable(table, spans=[[[0, 0]]], use_headers=True):
     table = addCushions(table)
     spans = sortSpans(spans)
     spans = convertToSpans(table, spans)
@@ -319,13 +319,11 @@ def generateRstTable(table, spans=[[[0, 0]]], use_headers=True):
 if __name__ == "__main__":
 
     table = [
-        ["Header row, column 1\n(header rows optional)", "Header 2",
-        "Header3", "Header 4"],
-        ["body row 1, column 1", "column 2", "column 3", "column 4"],
-        ["body row 2", "Cells may span columns.", "", ""],
-        ["body row 3", "Cells may\nspan rows.",
-        "- Table cells\n- contain\n- body elements", ""],
-        ["body row 4", "", "", ""]
+        ["Header 1", "Header 2", "Header3", "Header 4"],
+        ["row 1, column 1", "column 2", "column 3", "column 4"],
+        ["row 2", "Cells span columns.", "", ""],
+        ["row 3", "Cells\nspan rows.", "- hi\n- sup?\n- bye", ""],
+        ["row 4", "", "", ""]
     ]
 
     # These are [Row, Column] pairs of merged cells
@@ -335,4 +333,4 @@ if __name__ == "__main__":
 
     my_spans = [span0, span1, span2]
 
-    print(generateRstTable(table, spans=my_spans, use_headers=True))
+    print(makeRstTable(table, spans=my_spans, use_headers=True))
