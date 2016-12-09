@@ -52,7 +52,8 @@ pip. Like this:
 
 .. _Beautiful Soup 4: https://www.crummy.com/software/BeautifulSoup/
 
-Next, install DashTable by running this command:
+Next, install DashTable by downloading it, changing directory to the
+DashTable folder and running this command:
 
 .. code-block::
 
