@@ -4,4 +4,4 @@ __pycache__
 *.pyc
 /dist
 /build
-/dashTable.egg-info
+/dashtable.egg-info
