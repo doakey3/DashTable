@@ -1,6 +1,8 @@
-.. contents::
+This package was originally written by gustavklopp_
 
-Convert HTML tables to ASCII tables; colspan & rowspan allowed!
+.. _gustavklopp: https://github.com/gustavklopp
+
+.. contents::
 
 Introduction
 ============

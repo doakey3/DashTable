@@ -6,7 +6,7 @@ from dashtable import html2rst
 import sys
 import os
 
-#This is a macro for libreoffice calc
+# This is a macro for libreoffice calc
 # It requires dashtable to work.
 
 """

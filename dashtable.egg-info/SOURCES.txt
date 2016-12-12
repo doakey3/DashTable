@@ -1,0 +1,12 @@
+README.rst
+setup.py
+dashtable/__init__.py
+dashtable/data2rst.py
+dashtable/html2data.py
+dashtable/html2rst.py
+dashtable.egg-info/PKG-INFO
+dashtable.egg-info/SOURCES.txt
+dashtable.egg-info/dependency_links.txt
+dashtable.egg-info/entry_points.txt
+dashtable.egg-info/requires.txt
+dashtable.egg-info/top_level.txt
