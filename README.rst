@@ -1,7 +1,3 @@
-=========
-dashtable
-=========
-
 .. contents::
 
 Convert HTML tables to ASCII tables; colspan & rowspan allowed!
