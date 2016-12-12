@@ -1,12 +1,15 @@
 from setuptools import setup
 
-setup(name='DashTable',
-      version='1.1.2',
-      author='Gustav Klopp',
-      author_email='gustavk@protonmail.com',
-      description='A library for converting a HTML table into an ASCII table',
-      url='https://github.com/gustavklopp/DashTable',
-      packages=['DashTable'],
-      install_requires=['beautifulsoup4'],
-      entry_points={'console_scripts': ['dashtable = DashTable.main:cmdline']}
+setup(
+    name='dashtable',
+    packages=['dashtable'],
+    version='1.2.0',
+    description='A library for converting a HTML tables into ASCII tables',
+    author='doakey3',
+    author_email='dashtable.dmodo@spamgourmet.com',
+    url='https://github.com/doakey3/DashTable',
+    download_url='https://github.com/doakey3/DashTable/tarball/1.2.0',
+    license='MIT',
+    install_requires=['beautifulsoup4'],
+    entry_points={'console_scripts': ['dashtable = DashTable.html2rst:cmdline']}
 )
