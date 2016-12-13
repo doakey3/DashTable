@@ -1,13 +1,7 @@
-import socket
-import uno
-import subprocess
-from com.sun.star.beans import PropertyValue
-from dashtable import html2rst
-import sys
-import os
-
 # This is a macro for libreoffice calc
-# It requires dashtable to work.
+# It will saveAs html, convert html to rst, then open rst in text editor
+# The html file is destroyed after conversion
+# the rst remains as .ascii_table.txt in the home folder
 
 """
 Where to put this file
@@ -16,44 +10,77 @@ Where to put this file
 Linux
 -----
 
-    /home/<username>/.config/libreoffice/4/user/Scripts/python
+  /home/<username>/.config/libreoffice/4/user/Scripts/python
 
 Windows
 -------
-    
-    C:/Documents and Settings/<username>/Application Data/OpenOffice.org 2.0/user/Scripts/python
+
+  C:/Program Files (x86)/LibreOffice 5/share/Scripts/python
+
+  Then put bs4 and dashtable in:
+
+  C:/Program Files (x86)/LibreOffice 5/program/python-core-3.3.0/lib/site-packages
 
 """
 
-def build_rst(*args):
-    document = XSCRIPTCONTEXT.getDocument()
+import subprocess
+from dashtable import html2rst
+import sys
+import os
 
-    props_dict = {
-        "ReadOnly" : False,
-        "FilterName" : "HTML (StarCalc)",
-        "FilterOptions":""
-        }
+def build_rst(doc=None):
+    from com.sun.star.beans import PropertyValue
+    
+    if not doc:
+        document = XSCRIPTCONTEXT.getDocument()
+    else:
+        document = doc
 
-    props = []
-    for key in props_dict:
-        prop = PropertyValue()
-        prop.Name = key
-        prop.Value = props_dict[key]
-        props.append(prop)
+    html_url = os.path.join(os.path.expanduser('~'), 'temp.html')
+    html_url = html_url.replace('\\', '/')
 
-    document.storeToURL('file://' + os.getcwd() + '/temp.html', props)
+    if not html_url.startswith('/'):
+        save_url = 'file:///' + html_url
+    else:
+        save_url = 'file://' + html_url
 
-    rst = html2rst(os.getcwd() + '/temp.html', force_headers=True)
+    props = [PropertyValue(Name='FilterName', Value='HTML (StarCalc)')]
 
-    f = open(os.getcwd() + '/.calc2ascii_output.txt', 'w')
+    document.storeToURL(save_url, props)
+
+    rst = html2rst(html_url, force_headers=True)
+
+    rst_url = os.path.join(os.path.expanduser('~'), '.ascii_table.txt')
+    rst_url = rst_url.replace('\\', '/')
+
+    f = open(rst_url, 'w')
     f.write(rst)
     f.close()
 
-    os.remove(os.getcwd() + '/temp.html')
+    os.remove(html_url)
 
     if sys.platform == "win32":
-        subprocess.call(['start', os.getcwd() + '/.calc2ascii_output.txt'])
+        subprocess.call(['start',"", rst_url], shell=True)
     else:
-        subprocess.call(['xdg-open', os.getcwd() + '/.calc2ascii_output.txt'])
+        subprocess.call(['xdg-open', rst_url])
 
+if __name__ == '__main__':
+    """
+    To run this macro from outside calc, start calc with this first:
 
+soffice --calc \
+--accept="socket,host=localhost,port=2002;urp;StarOffice.ServiceManager"
+    """
+    
+    import socket
+    import uno
+
+    localContext = uno.getComponentContext()
+    resolver = localContext.ServiceManager.createInstanceWithContext(
+				"com.sun.star.bridge.UnoUrlResolver", localContext )
+    ctx = resolver.resolve( "uno:socket,host=localhost,port=2002;urp;StarOffice.ComponentContext" )
+    smgr = ctx.ServiceManager
+    desktop = smgr.createInstanceWithContext( "com.sun.star.frame.Desktop",ctx)
+    document = desktop.getCurrentComponent()
+    build_rst(doc=document)
+    

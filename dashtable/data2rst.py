@@ -300,7 +300,7 @@ def addCushions(table):
     return table
 
 
-def makeRstTable(table, spans=[[[0, 0]]], use_headers=True):
+def data2rst(table, spans=[[[0, 0]]], use_headers=True):
     table = addCushions(table)
     spans = sortSpans(spans)
     spans = convertToSpans(table, spans)
@@ -333,4 +333,4 @@ if __name__ == "__main__":
 
     my_spans = [span0, span1, span2]
 
-    print(makeRstTable(table, spans=my_spans, use_headers=True))
+    print(data2rst(table, spans=my_spans, use_headers=True))

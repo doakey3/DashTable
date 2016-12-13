@@ -6,9 +6,14 @@ def getColumnCount(html_string):
 
     soup = BeautifulSoup(html_string, 'html.parser')
     table = soup.find('table')
+    if not table:
+        return 0
+        
     column_counts = []
     rows = table.findAll('tr')
-
+    if len(rows) == 0:
+        return 0
+        
     for r in range(len(rows)):
         if r == 0:
             columns = rows[r].findAll('th')
@@ -34,11 +39,13 @@ def getRowCount(html_string):
 
     soup = BeautifulSoup(html_string, 'html.parser')
     table = soup.find('table')
+    if not table:
+        return 0
+        
     try:
         rows = table.findAll('tr')
     except AttributeError:
-        print("No table found in input text/file")
-        quit()
+        return 0
 
     return len(rows)
 
@@ -60,8 +67,13 @@ def extractTable(html_string):
     soup = BeautifulSoup(html_string, 'html.parser')
 
     table = soup.find('table')
-    rows = table.findAll('tr')
+    if not table:
+        return ''
 
+    rows = table.findAll('tr')
+    if len(rows) == 0:
+        return [['']]
+        
     for b in table.find_all('b'):
         b.replace_with('**' + b.text + '**')
 
@@ -96,7 +108,12 @@ def extractSpans(html_string):
 
     soup = BeautifulSoup(html_string, 'html.parser')
     table = soup.find('table')
+    if not table:
+        return []
+        
     rows = table.findAll('tr')
+    if len(rows) == 0:
+        return []
     spans = []
     for r in range(len(rows)):
         if r == 0:
@@ -137,6 +154,9 @@ def headersPresent(html_string):
     """
     soup = BeautifulSoup(html_string, 'html.parser')
     table = soup.find('table')
+    if not table:
+        return False
+        
     th = table.findAll('th')
     if len(th) > 0:
         return True
@@ -145,25 +165,10 @@ def headersPresent(html_string):
 
 
 if __name__ == '__main__':
-
+    
     html_string = """
         <table border="solid black">
-        <tr>
-        <td>aaaa</td>
-        <td colspan=2>COLSPAN</td>
-        <td rowspan=2>ROWSPAN</td>
-        </tr>
-        <tr>
-        <td>jj</td>
-        <td>under_COLSPAN1</td>
-        <td>under_COLSPAN2</td>
-        </tr>
-        <tr>
-        <td>fff</td>
-        <td>kk</td>
-        <td>hhhhh</td>
-        <td>iii</td>
-        </tr>
+
         </table>
     """
 

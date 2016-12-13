@@ -1,10 +1,10 @@
 try:
     from .html2data import extractSpans, extractTable, headersPresent
-    from .data2rst import makeRstTable
+    from .data2rst import data2rst
 
 except SystemError:
     from html2data import extractSpans, extractTable, headersPresent
-    from data2rst import makeRstTable
+    from data2rst import data2rst
 
 import os
 import argparse
@@ -22,12 +22,14 @@ def html2rst(html_string, force_headers=False):
         html_string = ''.join(lines)
 
     table_data = extractTable(html_string)
+    if table_data == '':
+        return ''
     spans = extractSpans(html_string)
     use_headers = headersPresent(html_string)
     if force_headers:
         use_headers = True
 
-    return(makeRstTable(table_data, spans, use_headers))
+    return(data2rst(table_data, spans, use_headers))
 
 
 def cmdline():
