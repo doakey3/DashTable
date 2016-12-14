@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='dashtable',
     packages=['dashtable'],
-    version='1.2.1',
+    version='1.2.2',
     description='A library for converting a HTML tables into ASCII tables',
     author='doakey3',
     author_email='dashtable.dmodo@spamgourmet.com',

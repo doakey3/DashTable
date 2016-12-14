@@ -1,9 +1,9 @@
 try:
-    from .html2data import extractSpans, extractTable, headersPresent
+    from .html2data import html2data
     from .data2rst import data2rst
 
 except SystemError:
-    from html2data import extractSpans, extractTable, headersPresent
+    from html2data import html2data
     from data2rst import data2rst
 
 import os
@@ -21,15 +21,13 @@ def html2rst(html_string, force_headers=False):
         file.close()
         html_string = ''.join(lines)
 
-    table_data = extractTable(html_string)
+    table_data, spans, use_headers = html2data(html_string)
     if table_data == '':
         return ''
-    spans = extractSpans(html_string)
-    use_headers = headersPresent(html_string)
     if force_headers:
         use_headers = True
 
-    return(data2rst(table_data, spans, use_headers))
+    return data2rst(table_data, spans, use_headers)
 
 
 def cmdline():
@@ -55,7 +53,3 @@ def cmdline():
     file = open(args.output_file, 'w')
     file.write(output_string)
     file.close()
-
-if __name__ == '__main__':
-
-    cmdline()

@@ -24,7 +24,7 @@ Windows
 """
 
 import subprocess
-from dashtable import html2rst
+from dashtable import html2rst, html2md
 import sys
 import os
 
@@ -64,6 +64,42 @@ def build_rst(doc=None):
     else:
         subprocess.call(['xdg-open', rst_url])
 
+def build_md(doc=None):
+    from com.sun.star.beans import PropertyValue
+    
+    if not doc:
+        document = XSCRIPTCONTEXT.getDocument()
+    else:
+        document = doc
+
+    html_url = os.path.join(os.path.expanduser('~'), 'temp.html')
+    html_url = html_url.replace('\\', '/')
+
+    if not html_url.startswith('/'):
+        save_url = 'file:///' + html_url
+    else:
+        save_url = 'file://' + html_url
+
+    props = [PropertyValue(Name='FilterName', Value='HTML (StarCalc)')]
+
+    document.storeToURL(save_url, props)
+
+    md = html2md(html_url)
+
+    md_url = os.path.join(os.path.expanduser('~'), '.ascii_table.txt')
+    md_url = md_url.replace('\\', '/')
+
+    f = open(md_url, 'w')
+    f.write(md)
+    f.close()
+
+    os.remove(html_url)
+
+    if sys.platform == "win32":
+        subprocess.call(['start',"", md_url], shell=True)
+    else:
+        subprocess.call(['xdg-open', md_url])
+
 if __name__ == '__main__':
     """
     To run this macro from outside calc, start calc with this first:
@@ -83,4 +119,4 @@ soffice --calc \
     desktop = smgr.createInstanceWithContext( "com.sun.star.frame.Desktop",ctx)
     document = desktop.getCurrentComponent()
     build_rst(doc=document)
-    
+    #build_md(doc=document)

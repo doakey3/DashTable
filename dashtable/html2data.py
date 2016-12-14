@@ -41,13 +41,36 @@ def getRowCount(html_string):
     table = soup.find('table')
     if not table:
         return 0
+
+    row_count = 0
         
-    try:
-        rows = table.findAll('tr')
-    except AttributeError:
+    column_counts = []
+    rows = table.findAll('tr')
+    if len(rows) == 0:
         return 0
 
-    return len(rows)
+    r = 0
+    while r < len(rows):
+        row_add = 1
+        if r == 0:
+            columns = rows[r].findAll('th')
+            if len(columns) == 0:
+                columns = rows[r].findAll('td')
+        else:
+            columns = rows[r].findAll('td')
+
+        if len(columns) == 0:
+            return 1
+
+        else:
+            if columns[0].has_attr('rowspan'):
+                row_add = int(columns[0]['rowspan'])
+
+        row_count += row_add
+        r += row_add
+
+    return row_count
+            
 
 
 def extractTable(html_string):
@@ -163,13 +186,22 @@ def headersPresent(html_string):
     else:
         return False
 
+def html2data(html_string):
+    table_data = extractTable(html_string)
+    spans = extractSpans(html_string)
+    use_headers = headersPresent(html_string)
+
+    return table_data, spans, use_headers
+
 
 if __name__ == '__main__':
     
     html_string = """
-        <table border="solid black">
-
-        </table>
+        <table>
+	<tr>
+		<td colspan=2 rowspan=2>test</td>
+	</tr>
+</table>
     """
 
     table = extractTable(html_string)
