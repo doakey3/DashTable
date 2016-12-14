@@ -54,9 +54,9 @@ And converts it to an easy-to-read table like this:
 
 There are many ASCII table creators, but most do not support column
 spanning and row spanning like you see in the table above. The table
-above is based on the reStructered_ table format.
+above is based on the reStructured_ table format.
 
-_reStructered: http://docutils.sourceforge.net/rst.html
+.. _reStructured: http://docutils.sourceforge.net/rst.html
 
 Installation
 ============
