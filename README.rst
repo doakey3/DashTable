@@ -3,7 +3,7 @@
 Introduction
 ============
 
-Use DashTable to create ASCII tables like this reStructered_ Table:
+Use DashTable to create ASCII tables like this reStructured_ Table:
 
 .. _reStructured: http://docutils.sourceforge.net/rst.html
 
