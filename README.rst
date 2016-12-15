@@ -96,16 +96,10 @@ List of Lists to Markdown Table
     from dashtable import data2md
 
     table = [
-        ['Row\nSpan', 'Header'],
-        ['Cell', ''],
-        ['Column Span', '']
-        ]
+        ['Header 1', 'Header 2', 'Header 3'],
+        ['Column 1', 'Column 2', 'Column 3']
+    ]
 
-    column_span = ([0, 0], [1, 0])
-    row_span = ([2, 0], [2, 1])
-
-    spans = [column_span, row_span]
-
-    print(data2md(table, spans))
+    print(data2md(table))
     
 
