@@ -1,42 +1,11 @@
-This package was originally written by gustavklopp_
-
-.. _gustavklopp: https://github.com/gustavklopp
-
 .. contents::
 
 Introduction
 ============
 
-DashTable takes codified tables like this html table:
+Use DashTable to create ASCII tables like this reStructered_ Table:
 
-.. code-block:: html
-
-    <table>
-    <tr>
-        <th>Header 1</th>
-        <th>Header 2</th>
-        <th>Header 3</th>
-    </tr>
-    <tr>
-        <td>body row 1</td>
-        <td>column 2</td>
-        <td>column 3</td>
-    </tr>
-    <tr>
-        <td>body row 2</td>
-        <td colspan=2>Cells may span columns</td>
-    </tr>
-    <tr>
-        <td>body row 3</td>
-        <td rowspan=2>Cells may span rows.</td>
-        <td rowspan=2>- Cells<br>- contain<br>- blocks</td>
-    </tr>
-    <tr>
-        <td>body row 4</td>
-    </tr>
-    </table>
-
-And converts it to an easy-to-read table like this:
+.. _reStructured: http://docutils.sourceforge.net/rst.html
 
 ::
 
@@ -52,31 +21,20 @@ And converts it to an easy-to-read table like this:
     | body row 4 |            | - blocks. |
     +------------+------------+-----------+
 
-There are many ASCII table creators, but most do not support column
-spanning and row spanning like you see in the table above. The table
-above is based on the reStructured_ table format.
-
-.. _reStructured: http://docutils.sourceforge.net/rst.html
-
 Installation
 ============
-
-This package requires `Beautiful Soup 4`_ which will install alongside
-dashtable if you don't already have it.
-
-.. _Beautiful Soup 4: https://www.crummy.com/software/BeautifulSoup/
-
-To install dashtable, use pip
 
 ::
 
     pip install dashtable
 
-Usage
-=====
+Example Usage
+=============
 
-reStructured Tables
--------------------
+HTML to reStructered Table
+--------------------------
+
+html2rst requires a filepath or a string to work.
 
 .. code-block:: python
 
@@ -85,26 +43,17 @@ reStructured Tables
     filepath = "path/to/html/file.html"
     print(html2rst(filepath, force_headers=False))
 
-You may use a filepath or a string as the input for the function.
 
-You may force the output table's first row to be a header row even if
-the input html's first row is not. To do this, set the  force_headers
-parameter to True.
-
-Command line method:
+Command Line Method:
 
 ::
 
     python html2rst.py input.html output.rst --force_headers
 
-The "--force_headers" is optional.
+HTML to MarkDown Table
+----------------------
 
-Markdown Tables
----------------
-
-Convert html tables to the markdown_ format.
-
-.. _markdown: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+html2md requires a filepath or a string to work.
 
 .. code-block:: python
 
@@ -119,34 +68,44 @@ Command line method:
 
     python html2md.py input.html output.md
 
-LibreOffice Calc Macro
-======================
+List of Lists to reStructered Table
+-----------------------------------
 
-The file "calc2ascii_table" is a macro for LibreOffice Calc to create
-ascii tables from inside Calc.
+.. code-block:: python
 
-Installation Linux
-------------------
+    from dashtable import data2rst
 
-Install dashtable with pip, then put calc2ascii_table.py into this
-directory:
+    table = [
+        ['Row\nSpan', 'Header'],
+        ['Cell', ''],
+        ['Column Span', '']
+        ]
 
-::
+    column_span = ([0, 0], [1, 0])
+    row_span = ([2, 0], [2, 1])
 
-    /home/<username>/.config/libreoffice/4/user/Scripts/python
+    spans = [column_span, row_span]
 
-If there is no Scripts folder, then make one. You can now run the macro
-from within calc.
+    print(data2rst(table, spans, use_headers=True))
 
-Installation Windows
---------------------
+List of Lists to Markdown Table
+-------------------------------
 
-Download dashtable and bs4. Put these into the site-packages folder
-inside LibreOffice's python. Then place calc2ascii_table in this
-directory:
+.. code-block:: python
 
-::
+    from dashtable import data2md
 
-    C:/Program Files (x86)/LibreOffice 5/share/Scripts/python
+    table = [
+        ['Row\nSpan', 'Header'],
+        ['Cell', ''],
+        ['Column Span', '']
+        ]
 
+    column_span = ([0, 0], [1, 0])
+    row_span = ([2, 0], [2, 1])
+
+    spans = [column_span, row_span]
+
+    print(data2md(table, spans))
     
+
