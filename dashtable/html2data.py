@@ -71,7 +71,27 @@ def getRowCount(html_string):
 
     return row_count
             
+def convertRichText(html_string):
+    """Fix the newlines, bolds, italics"""
+    
+    html_string = html_string.replace('<br>', '<br>\n')
+    html_string = html_string.replace('<p>', '<p>\n')
+    html_string = html_string.replace('<b>', '**')
+    html_string = html_string.replace('<\b>', '**')
+    html_string = html_string.replace('<i>', '*')
+    html_string = html_string.replace('</i>', '*')
 
+    return html_string
+
+def findUnassignedCell(table):
+    """
+    Search through table and return the first [row, column] pair of a
+    cell whose value == None
+    """
+    for row in range(len(table)):
+        for column in range(len(table[row])):
+            if table[row][column] == None:
+                return row, column
 
 def extractTable(html_string):
     """Convert an html string containing a table into data table"""
@@ -82,44 +102,43 @@ def extractTable(html_string):
     for r in range(row_count):
         data_table.append([])
         for c in range(column_count):
-            data_table[r].append('')
+            data_table[r].append(None)
 
-    html_string = html_string.replace('<br>', '<br>\n')
-    html_string = html_string.replace('<p>', '<p>\n')
-
+    html_string = convertRichText(html_string)
     soup = BeautifulSoup(html_string, 'html.parser')
-
     table = soup.find('table')
     if not table:
         return ''
 
-    rows = table.findAll('tr')
-    if len(rows) == 0:
+    trs = table.findAll('tr')
+    if len(trs) == 0:
         return [['']]
-        
-    for b in table.find_all('b'):
-        b.replace_with('**' + b.text + '**')
 
-    for i in table.find_all('i'):
-        i.replace_with('*' + i.text + '*')
-
-    for r in range(len(rows)):
-        if r == 0:
-            ths = rows[r].findAll('th')
+    for tr in range(len(trs)):
+        if tr == 0:
+            ths = trs[tr].findAll('th')
             if len(ths) == 0:
-                ths = rows[r].findAll('td')
+                ths = trs[tr].findAll('td')
             tds = ths
         else:
-            tds = rows[r].findAll('td')
-
-        column = 0
+            tds = trs[tr].findAll('td')
+        
         for i in range(len(tds)):
-            data_table[r][column] = tds[i].text.strip()
-
+            row, column = findUnassignedCell(data_table)
+            span_column_count = 1
+            span_row_count = 1
+            
             if tds[i].has_attr('colspan'):
-                column += int(tds[i]['colspan'])
-            else:
-                column += 1
+                span_column_count = int(tds[i]['colspan'])
+            if tds[i].has_attr('rowspan'):
+                span_row_count = int(tds[i]['rowspan'])
+
+            for row_prime in range(row, row + span_row_count):
+                for column_prime in range(column, column + span_column_count):
+                    if row_prime == row and column_prime == column:
+                        data_table[row_prime][column_prime] = tds[i].text.strip()
+                    else:
+                        data_table[row_prime][column_prime] = ""
 
     return data_table
 
@@ -197,10 +216,23 @@ def html2data(html_string):
 if __name__ == '__main__':
     
     html_string = """
-        <table>
-	<tr>
-		<td colspan=2 rowspan=2>test</td>
-	</tr>
+<table border="solid black">
+<tr>
+<td>aaaa</td>
+<td colspan=2>COLSPAN</td>
+<td rowspan=2>ROWSPAN</td>
+</tr>
+<tr>
+<td>jj</td>
+<td>under_COLSPAN1</td>
+<td>under_COLSPAN2</td>
+</tr>
+<tr>
+<td>fff</td>
+<td>kk</td>
+<td>hhhhh</td>
+<td>iii</td>
+</tr>
 </table>
     """
 

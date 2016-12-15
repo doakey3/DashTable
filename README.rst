@@ -104,7 +104,7 @@ Markdown Tables
 
 Convert html tables to the markdown_ format.
 
-_markdown: 
+.. _markdown: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 
 .. code-block:: python
 
