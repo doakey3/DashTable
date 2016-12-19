@@ -4,7 +4,7 @@ Video Tutorial
 ==============
 
 .. image:: http://i.imgur.com/v1rGCHn.png
-    https://www.youtube.com/watch?v=bdcswQq4lIM&feature=youtu.be
+    :target: https://www.youtube.com/watch?v=bdcswQq4lIM&feature=youtu.be
 
 Introduction
 ============
