@@ -47,9 +47,9 @@ def build_rst(doc=None):
     props = [PropertyValue(Name='FilterName', Value='HTML (StarCalc)')]
 
     document.storeToURL(save_url, props)
-
+    
     rst = html2rst(html_url, force_headers=True)
-
+    
     rst_url = os.path.join(os.path.expanduser('~'), '.ascii_table.txt')
     rst_url = rst_url.replace('\\', '/')
 
@@ -63,6 +63,7 @@ def build_rst(doc=None):
         subprocess.call(['start',"", rst_url], shell=True)
     else:
         subprocess.call(['xdg-open', rst_url])
+
 
 def build_md(doc=None):
     from com.sun.star.beans import PropertyValue
@@ -119,4 +120,3 @@ soffice --calc \
     desktop = smgr.createInstanceWithContext( "com.sun.star.frame.Desktop",ctx)
     document = desktop.getCurrentComponent()
     build_rst(doc=document)
-    #build_md(doc=document)

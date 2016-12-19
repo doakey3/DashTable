@@ -1,3 +1,12 @@
+try:
+    from .dashutils import lineBreak, getSpan, getSpanColumnCount
+    from .dashutils import sortSpans, addCushions
+
+except SystemError:
+    from dashutils import lineBreak, getSpan, getSpanColumnCount
+    from dashutils import sortSpans, addCushions
+
+
 class Cell():
     """Holds the text and data for an rst text cell"""
     def __init__(self, text, row, column, row_count, column_count):
@@ -78,22 +87,6 @@ class Cell():
             return False
 
 
-def lineBreak(count, symbol):
-    """makes a string that is count long of symbol"""
-    x = ""
-    for i in range(0, count):
-        x = x + symbol
-    return x
-
-
-def getSpan(spans, row, column):
-    """checks if a row,column is in spans"""
-    for i in range(len(spans)):
-        if [row, column] in spans[i]:
-            return spans[i]
-    return False
-
-
 def getLongestLineLength(text):
     """Get the length longest line in a paragraph"""
     lines = text.split("\n")
@@ -113,17 +106,6 @@ def getSpanRowCount(span):
             rows += 1
             first_row = span[i][0]
     return rows
-
-
-def getSpanColumnCount(span):
-    """Gets the number of columns inluded in a span"""
-    columns = 1
-    first_column = span[0][1]
-    for i in range(len(span)):
-        if span[i][1] > first_column:
-            columns += 1
-            first_column = span[i][1]
-    return columns
 
 
 def getTotalSpanHeight(span, heights):
@@ -280,24 +262,6 @@ def convertToSpans(table, spans):
     new_spans.extend(spans)
     new_spans = list(sorted(new_spans))
     return new_spans
-
-
-def sortSpans(spans):
-    """Ensure the first cell of each span is the text cell"""
-    for span in range(len(spans)):
-        spans[span] = sorted(spans[span])
-    return spans
-
-
-def addCushions(table):
-    """adds space to start and end of each item in a list of lists"""
-    for row in range(len(table)):
-        for column in range(len(table[row])):
-            lines = table[row][column].split("\n")
-            for i in range(len(lines)):
-                lines[i] = " " + lines[i].rstrip() + " "
-            table[row][column] = "\n".join(lines)
-    return table
 
 
 def data2rst(table, spans=[[[0, 0]]], use_headers=True):
