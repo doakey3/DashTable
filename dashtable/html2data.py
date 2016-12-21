@@ -234,24 +234,29 @@ def html2data(html_string):
 if __name__ == '__main__':
 
     html_string = """
-    <table cellspacing="0" border="0">
-        <colgroup span="3" width="85"></colgroup>
-        <tr>
-            <td height="17" align="left">test</td>
-            <td align="left"><br></td>
-            <td align="left"><br></td>
-        </tr>
-        <tr>
-            <td height="17" align="left"><br></td>
-            <td align="left"><br></td>
-            <td align="left"><br></td>
-        </tr>
-        <tr>
-            <td height="17" align="left"><br></td>
-            <td align="left"><br></td>
-            <td rowspan=5 align="left">king</td>
-        </tr>
-    </table>
+<table cellspacing="0" border="0">
+	<colgroup width="193"></colgroup>
+	<colgroup width="374"></colgroup>
+	<tr>
+		<td colspan=2 height="17" align="left"><font face="DejaVu Sans Mono">--------------------------------------------------------------------</font></td>
+		</tr>
+	<tr>
+		<td height="47" align="left"><font face="DejaVu Sans Mono">Abdominal Pain Diff Dx</font></td>
+		<td align="left"><font face="DejaVu Sans Mono">Perforation, obstruction, toxin, infection, <br>hepatobiliary, pancreatic, <br>female (preggo, ovarian cyst, STI)</font></td>
+	</tr>
+	<tr>
+		<td height="32" align="left"><font face="DejaVu Sans Mono">Chest Pain Diff Dx</font></td>
+		<td align="left"><font face="DejaVu Sans Mono">MI, PE, Aortic dissection, GI (GERD, ulcer), <br>Anxiety, Musculoskeletal</font></td>
+	</tr>
+	<tr>
+		<td height="17" align="left"><font face="DejaVu Sans Mono">Acute cough Diff Dx</font></td>
+		<td align="left"><font face="DejaVu Sans Mono">Viral, Bacterial, Allergy, </font></td>
+	</tr>
+	<tr>
+		<td height="47" align="left"><font face="DejaVu Sans Mono">Chronic cough Diff Dx</font></td>
+		<td align="left"><font face="DejaVu Sans Mono">COPD, Asthma, Allergy, Bacterial, <br>ACE inhibitor, Fungal (Coccidioides), <br>Cystic fibrosis</font></td>
+	</tr>
+</table>
     """
 
     table, spans, headers = html2data(html_string)
@@ -260,3 +265,11 @@ if __name__ == '__main__':
 
     for s in range(len(spans)):
         print(spans[s])
+
+    string = str(table) + '\n'
+
+    string += str(spans) + '\n'
+
+    f = open('/home/doakey/Desktop/test.txt', 'w')
+    f.write(string)
+    f.close()

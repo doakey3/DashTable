@@ -90,7 +90,7 @@ class Cell():
 def getLongestLineLength(text):
     """Get the length longest line in a paragraph"""
     lines = text.split("\n")
-    length = -1
+    length = 0
     for i in range(len(lines)):
         if len(lines[i]) > length:
             length = len(lines[i])
@@ -217,37 +217,49 @@ def getHeights(table, spans):
                 span_remainders[key] -= int(span_remainders[key])
     return heights
 
-
-def getWidths(table, spans):
-    """Get the widths of the columns of the output table"""
-    span_remainders = {}
-    for span in spans:
-        span_remainders[str(span)] = 0
-
+def getSimpleWidths(table, spans):
+    """Assign widths to all columns based only on single-column spans"""
     widths = []
     for column in table[0]:
-        widths.append(-1)
+        widths.append(3)
 
     for row in range(len(table)):
         for column in range(len(table[row])):
             span = getSpan(spans, row, column)
-            text_row = span[0][0]
-            text_column = span[0][1]
-            text = table[text_row][text_column]
             column_count = getSpanColumnCount(span)
-            avg = getLongestLineLength(text) / column_count
-            key = str(span)
-            if avg > widths[column]:
-                span_remainders[key] += avg - int(avg)
-                widths[column] = int(avg)
-            elif avg + span_remainders[key] < widths[column]:
-                span_remainders[key] += avg - int(avg)
-            elif avg + span_remainders[key] == widths[column]:
-                span_remainders[key] = 0
-            elif avg + span_remainders[key] > widths[column]:
-                widths[column] = int(avg + span_remainders[key])
-                span_remainders[key] += avg
-                span_remainders[key] -= int(span_remainders[key])
+            if column_count == 1:
+                text_row = span[0][0]
+                text_column = span[0][1]
+                text = table[text_row][text_column]
+                length = getLongestLineLength(text)
+                if length > widths[column]:
+                    widths[column] = length
+    return widths
+
+def getWidths(table, spans):
+    """Get the widths of the columns of the output table"""
+
+    widths = getSimpleWidths(table, spans)
+
+    for row in range(len(table)):
+        for column in range(len(table[row])):
+            span = getSpan(spans, row, column)
+            column_count = getSpanColumnCount(span)
+            if column_count > 1:
+                text_row = span[0][0]
+                text_column = span[0][1]
+                text = table[text_row][text_column]
+                length = getLongestLineLength(text)
+                end_column = text_column + column_count
+                available_space = sum(widths[text_column: end_column])
+                available_space += column_count - 1
+                while length > available_space:
+                    for i in range(text_column, end_column):
+                        widths[i] += 1
+                        available_space = sum(widths[text_column: end_column])
+                        available_space += column_count - 1
+                        if length <= available_space:
+                            break
     return widths
 
 

@@ -70,7 +70,8 @@ def addCushions(table):
         for column in range(len(table[row])):
             lines = table[row][column].split("\n")
             for i in range(len(lines)):
-                lines[i] = " " + lines[i].rstrip() + " "
+                if not lines[i] == "":
+                    lines[i] = " " + lines[i].rstrip() + " "
             table[row][column] = "\n".join(lines)
     return table
 

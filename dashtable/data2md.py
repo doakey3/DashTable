@@ -6,7 +6,7 @@ except SystemError:
 
 
 def getColumnWidth(column, table):
-    width = 0
+    width = 3
     for r in range(len(table)):
         w = len(table[r][column])
         if w > width:
