@@ -37,7 +37,7 @@ Installation
 Example Usage
 =============
 
-HTML to reStructered Table
+HTML to reStructured Table
 --------------------------
 
 html2rst requires a filepath or a string to work.
