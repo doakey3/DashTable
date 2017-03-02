@@ -10,14 +10,13 @@ except SystemError:
 
 def convertRichText(html_string):
     """Fix the newlines, bolds, italics"""
-
+    
     html_string = html_string.replace('<br>', '<br>\n')
     html_string = html_string.replace('<p>', '<p>\n')
     html_string = html_string.replace('<b>', '**')
-    html_string = html_string.replace('<\b>', '**')
+    html_string = html_string.replace('</b>', '**')
     html_string = html_string.replace('<i>', '*')
     html_string = html_string.replace('</i>', '*')
-
     return html_string
 
 
@@ -196,7 +195,10 @@ def extractTable(html_string, row_count, column_count):
             for row_prime in range(row, row + r_span_count):
                 for column_prime in range(column, column + c_span_count):
                     if row_prime == row and column_prime == column:
-                        text = td.text.strip()
+                        text = str(td.text.strip())
+                        text = str(text.encode('ascii', 'ignore'))[2:-1]
+                        text = text.replace('\\n','\n')
+                        
                         data_table[row_prime][column_prime] = text
                     else:
                         data_table[row_prime][column_prime] = ""
@@ -226,7 +228,6 @@ def html2data(html_string):
             count += 1
 
     table = extractTable(html_string, row_count, column_count)
-
     use_headers = headersPresent(html_string)
 
     return table, spans, use_headers
@@ -269,7 +270,3 @@ if __name__ == '__main__':
     string = str(table) + '\n'
 
     string += str(spans) + '\n'
-
-    f = open('/home/doakey/Desktop/test.txt', 'w')
-    f.write(string)
-    f.close()
