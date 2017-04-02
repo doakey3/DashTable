@@ -275,22 +275,39 @@ def convertToSpans(table, spans):
     new_spans = list(sorted(new_spans))
     return new_spans
 
+def check_list(table):
+    """Checks to make sure that each row has the same number of columns"""
+    if not type(table) is list:
+        print('Table type must be a list of lists')
+        return False
+    if len(table) == 0:
+        print('Table has no contents')
+        return False
+    for i in range(len(table)):
+        if not type(table[i]) is list:
+            print('Table type must be a list of lists')
+            return False
+        if not len(table[i]) == len(table[0]):
+            print('Each row must have the same number of columns')
+            return False
+    return True
 
 def data2rst(table, spans=[[[0, 0]]], use_headers=True):
-    table = addCushions(table)
-    spans = sortSpans(spans)
-    spans = convertToSpans(table, spans)
+    if check_list(table):
+        table = addCushions(table)
+        spans = sortSpans(spans)
+        spans = convertToSpans(table, spans)
 
-    widths = getWidths(table, spans)
-    heights = getHeights(table, spans)
+        widths = getWidths(table, spans)
+        heights = getHeights(table, spans)
 
-    cells = []
-    for span in spans:
-        cell = makeTextCell(table, span, widths, heights, use_headers)
-        cells.append(cell)
-    cells = list(sorted(cells))
-    output = mergeCells(cells)
-    return output
+        cells = []
+        for span in spans:
+            cell = makeTextCell(table, span, widths, heights, use_headers)
+            cells.append(cell)
+        cells = list(sorted(cells))
+        output = mergeCells(cells)
+        return output
 
 if __name__ == "__main__":
 

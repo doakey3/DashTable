@@ -90,9 +90,9 @@ List of Lists to reStructered Table
     column_span = ([0, 0], [1, 0])
     row_span = ([2, 0], [2, 1])
 
-    spans = [column_span, row_span]
+    my_spans = [column_span, row_span]
 
-    print(data2rst(table, spans, use_headers=True))
+    print(data2rst(table, spans=my_spans, use_headers=True))
 
 List of Lists to Markdown Table
 -------------------------------
