@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 try:
     from .dashutils import getSpanRowCount, sortSpans, getSpan
 
-except SystemError:
+except (SystemError, ModuleNotFoundError, ImportError):
     from dashutils import getSpanRowCount, sortSpans, getSpan
 
 

@@ -1,7 +1,7 @@
 try:
     from .dashutils import lineBreak, centerWord, removeNewlines, addCushions
 
-except SystemError:
+except (SystemError, ModuleNotFoundError, ImportError):
     from dashutils import lineBreak, centerWord, removeNewlines, addCushions
 
 

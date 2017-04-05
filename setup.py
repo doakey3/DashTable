@@ -3,13 +3,13 @@ from setuptools import setup
 setup(
     name='dashtable',
     packages=['dashtable'],
-    version='1.2.8',
-    description='A library for converting a HTML tables into ASCII tables',
+    version='1.2.9',
+    description='A library for converting a HTML tables into ASCII tables, rowspan and colspan allowed!',
     long_description=open('README.rst').read(),
     author='doakey3',
     author_email='dashtable.dmodo@spamgourmet.com',
     url='https://github.com/doakey3/DashTable',
-    download_url='https://github.com/doakey3/DashTable/tarball/1.2.8',
+    download_url='https://github.com/doakey3/DashTable/tarball/1.2.9',
     license='MIT',
     install_requires=['beautifulsoup4'],
     entry_points={'console_scripts': ['dashtable = DashTable.html2rst:cmdline']}

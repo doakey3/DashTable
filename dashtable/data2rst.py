@@ -2,7 +2,7 @@ try:
     from .dashutils import lineBreak, getSpan, getSpanColumnCount
     from .dashutils import sortSpans, addCushions
 
-except SystemError:
+except (SystemError, ModuleNotFoundError, ImportError):
     from dashutils import lineBreak, getSpan, getSpanColumnCount
     from dashutils import sortSpans, addCushions
 

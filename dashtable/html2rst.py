@@ -2,7 +2,7 @@ try:
     from .html2data import html2data
     from .data2rst import data2rst
 
-except SystemError:
+except (SystemError, ModuleNotFoundError, ImportError):
     from html2data import html2data
     from data2rst import data2rst
 
