@@ -6,20 +6,37 @@ try:
 
 except (SystemError, ModuleNotFoundError, ImportError):
     from dashutils import getSpanRowCount, sortSpans, getSpan
-
+    
 
 def convertRichText(html_string):
     """Fix the newlines, bolds, italics"""
     
-    # normalize br's
+    # normalize tags
     soup = BeautifulSoup(html_string, 'html.parser')
     for br in soup.find_all('br'):
-        normalized_br = soup.new_tag("br")
+        normalized_br = soup.new_tag('br')
+        normalized_br.contents = br.contents
+        print(normalized_br.contents)
         br.replace_with(normalized_br)
+    
+    for p in soup.find_all('p'):
+        normalized_p = soup.new_tag('p')
+        normalized_p.contents = p.contents
+        p.replace_with(normalized_p)
+    
+    for b in soup.find_all('b'):
+        normalized_b = soup.new_tag('b')
+        normalized_b.contents = b.contents
+        b.replace_with(normalized_b)
+    
+    for i in soup.find_all('i'):
+        normalized_i = soup.new_tag('i')
+        normalized_i.contents = i.contents
+        i.replace_with(normalized_i)
 
     html_string = str(soup)
 
-    html_string = html_string.replace('<br/>', '<br/>\n')
+    html_string = html_string.replace('<br>', '<br>\n')
     html_string = html_string.replace('<p>', '<p>\n')
     html_string = html_string.replace('<b>', '**')
     html_string = html_string.replace('</b>', '**')

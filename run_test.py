@@ -4,7 +4,7 @@ import os
 
 for file in os.listdir(os.getcwd() + '/test_files'):
     if file.endswith('.html'):
-        path = os.getcwd() + '/test_files/' + file
+        path = os.path.join(os.getcwd(), 'test_files', file)
         f = open(path, 'r')
         lines = f.readlines()
         f.close()
