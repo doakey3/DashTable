@@ -16,7 +16,6 @@ def convertRichText(html_string):
     for br in soup.find_all('br'):
         normalized_br = soup.new_tag('br')
         normalized_br.contents = br.contents
-        print(normalized_br.contents)
         br.replace_with(normalized_br)
     
     for p in soup.find_all('p'):
@@ -36,6 +35,7 @@ def convertRichText(html_string):
 
     html_string = str(soup)
 
+    html_string = html_string.replace('<br/>', '<br/>\n')
     html_string = html_string.replace('<br>', '<br>\n')
     html_string = html_string.replace('<p>', '<p>\n')
     html_string = html_string.replace('<b>', '**')
