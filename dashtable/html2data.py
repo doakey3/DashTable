@@ -38,6 +38,7 @@ def convertRichText(html_string):
 
     html_string = str(soup)
 
+    html_string = html_string.replace('<br/>', '<br/>\n')
     html_string = html_string.replace('<br>', '<br>\n')
     html_string = html_string.replace('<p>', '<p>\n')
     html_string = html_string.replace('<b>', '**')
