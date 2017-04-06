@@ -11,7 +11,15 @@ except SystemError:
 def convertRichText(html_string):
     """Fix the newlines, bolds, italics"""
     
-    html_string = html_string.replace('<br>', '<br>\n')
+    # normalize br's
+    soup = BeautifulSoup(html_string, 'html.parser')
+    for br in soup.find_all('br'):
+        normalized_br = soup.new_tag("br")
+        br.replace_with(normalized_br)
+
+    html_string = str(soup)
+
+    html_string = html_string.replace('<br/>', '<br/>\n')
     html_string = html_string.replace('<p>', '<p>\n')
     html_string = html_string.replace('<b>', '**')
     html_string = html_string.replace('</b>', '**')
