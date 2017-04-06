@@ -1,0 +1,5 @@
+|  Name  | Features |        |    Job    |
+|--------|----------|--------|-----------|
+|        |  height  | weight |           |
+|  Jack  |   1.9m   |  75Kg  | graphist  |
+| Cherry |   1.7m   |  56Kg  | developer |

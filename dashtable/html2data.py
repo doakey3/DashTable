@@ -11,12 +11,14 @@ except (SystemError, ModuleNotFoundError, ImportError):
 def convertRichText(html_string):
     """Fix the newlines, bolds, italics"""
     
+    html_string = html_string.replace('<br />', '<br>')
+    html_string = html_string.replace('<br/>', '<br>')
+    
     # normalize tags
     soup = BeautifulSoup(html_string, 'html.parser')
     for br in soup.find_all('br'):
         normalized_br = soup.new_tag('br')
         normalized_br.contents = br.contents
-        print(normalized_br.contents)
         br.replace_with(normalized_br)
     
     for p in soup.find_all('p'):

@@ -49,3 +49,7 @@ def cmdline():
     file = open(args.output_file, 'w')
     file.write(output_string)
     file.close()
+
+if __name__ == '__main__':
+    
+    cmdline()
