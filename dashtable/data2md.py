@@ -16,7 +16,7 @@ def getColumnWidth(column, table):
 
 def data2md(table):
     """
-    Creates a table in the github table format
+    Creates a table in the markdown table format
     """
     table = removeNewlines(table)
     table = addCushions(table)

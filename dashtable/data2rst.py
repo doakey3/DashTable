@@ -275,7 +275,7 @@ def convertToSpans(table, spans):
     new_spans = list(sorted(new_spans))
     return new_spans
 
-def check_list(table):
+def checkList(table):
     """Checks to make sure that each row has the same number of columns"""
     if not type(table) is list:
         print('Table type must be a list of lists')
@@ -293,7 +293,7 @@ def check_list(table):
     return True
 
 def data2rst(table, spans=[[[0, 0]]], use_headers=True):
-    if check_list(table):
+    if checkList(table):
         table = addCushions(table)
         spans = sortSpans(spans)
         spans = convertToSpans(table, spans)

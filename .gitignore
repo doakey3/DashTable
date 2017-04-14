@@ -1,4 +1,4 @@
-.pydevproject
+.gitignore
 __pycache__
 .project
 *.pyc
