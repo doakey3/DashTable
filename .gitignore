@@ -1,8 +1,0 @@
-.gitignore
-__pycache__
-.project
-*.pyc
-/dist
-/build
-/dashtable.egg-info
-mover.py
