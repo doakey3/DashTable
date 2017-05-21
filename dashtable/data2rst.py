@@ -6,6 +6,18 @@ except (SystemError, ModuleNotFoundError, ImportError):
     from dashutils import lineBreak, getSpan, getSpanColumnCount
     from dashutils import sortSpans, addCushions
 
+class TableTypeError(Exception):
+    """Raised if a Table is not a List of Lists"""
+
+class TableContentError(Exception):
+    """Raised if a Table is empty or has inconsistent column counts"""
+
+class SpanError(Exception):
+    """
+    Raised if the spans in any spangroup are not touching or 
+    the span is not square
+    """
+    
 
 class Cell():
     """Holds the text and data for an rst text cell"""
@@ -107,7 +119,15 @@ def getSpanRowCount(span):
             first_row = span[i][0]
     return rows
 
-
+def getSpanColumnCount(span):
+    """Gets the number of rows included in a span"""
+    first_column = span[0][1]
+    column = first_column
+    for pair in span:
+        if pair[1] > column:
+            column = pair[1]
+    return (column - first_column) + 1
+        
 def getTotalSpanHeight(span, heights):
     """Sum the row heights of a span"""
     start_row = span[0][0]
@@ -275,39 +295,82 @@ def convertToSpans(table, spans):
     new_spans = list(sorted(new_spans))
     return new_spans
 
-def checkList(table):
+def checkTable(table):
     """Checks to make sure that each row has the same number of columns"""
     if not type(table) is list:
-        print('Table type must be a list of lists')
-        return False
+        raise(TableTypeError("Table must be a list of lists"))
     if len(table) == 0:
-        print('Table has no contents')
-        return False
+        raise(TableContentError("Table must contain at least one row and one column"))
     for i in range(len(table)):
         if not type(table[i]) is list:
-            print('Table type must be a list of lists')
-            return False
+            raise(TableTypeError("Table must be a list of lists of strings  "))
         if not len(table[i]) == len(table[0]):
-            print('Each row must have the same number of columns')
-            return False
-    return True
+            raise(TableContentError("Each row must have the same number of columns"))
+        for item in table[i]:
+            if not type(item) is str:
+                raise(TableContentError("Table must be a list of lists of strings"))
+
+    
+def checkSpan(span):
+    """Check the spans in a spangroup"""
+    if not type(span) is list:
+        raise(SpanError("Spans must be a list/tuple of lists"))
+    for pair in span:
+        if not type(pair) is list:
+            raise(SpanError("Spans must be a list/tuple of lists"))
+        if not len(pair) == 2:
+            raise(SpanError("Spans must be a [Row, Column] pair of integers"))
+    
+    total_rows = getSpanRowCount(span)
+    total_columns = getSpanColumnCount(span)
+    
+    if not len(span) == total_rows * total_columns:
+        raise SpanError('Somethings wrong with the span group: ' + str(span))
+    
+    checked = [span.pop(0)]
+
+    while len(span) > 0:
+        row = span[0][0]
+        col = span[0][1]
+        matched = False
+        
+        for i in range(len(checked)):
+            if row == checked[i][0] and abs(col - checked[i][1]) == 1:
+                matched = True
+            
+            elif abs(row - checked[i][0]) == 1 and col == checked[i][1]:
+                matched = True
+            
+        if matched:
+            checked.append(span.pop(0))
+        
+        else:
+            checked.extend(span)
+            raise SpanError('Somethings wrong with the span group: ' + str(checked))
 
 def data2rst(table, spans=[[[0, 0]]], use_headers=True):
-    if checkList(table):
-        table = addCushions(table)
-        spans = sortSpans(spans)
-        spans = convertToSpans(table, spans)
+    checkTable(table)
 
-        widths = getWidths(table, spans)
-        heights = getHeights(table, spans)
+    table = addCushions(table)
+    spans = sortSpans(spans)
+    
+    for span in spans:
+        span = list(span)
+        checkSpan(span)
+    
+    spans = convertToSpans(table, spans)
 
-        cells = []
-        for span in spans:
-            cell = makeTextCell(table, span, widths, heights, use_headers)
-            cells.append(cell)
-        cells = list(sorted(cells))
-        output = mergeCells(cells)
-        return output
+    widths = getWidths(table, spans)
+    heights = getHeights(table, spans)
+
+    cells = []
+    for span in spans:
+        cell = makeTextCell(table, span, widths, heights, use_headers)
+        cells.append(cell)
+    cells = list(sorted(cells))
+    output = mergeCells(cells)
+    return output
+
 
 if __name__ == "__main__":
 
@@ -325,5 +388,5 @@ if __name__ == "__main__":
     span2 = ([3, 3], [3, 2], [4, 2], [4, 3])
 
     my_spans = [span0, span1, span2]
-
+    
     print(data2rst(table, spans=my_spans, use_headers=True))
