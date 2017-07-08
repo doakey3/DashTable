@@ -27,6 +27,34 @@ class Cell():
         self.column = column
         self.row_count = row_count
         self.column_count = column_count
+    
+    @property
+    def left_sections(self):
+        lines = self.text.split('\n')
+        sections = 0
+        for i in range(len(lines)):
+            if lines[i].startswith('+'):
+                sections += 1
+        return sections - 1
+    
+    @property
+    def right_sections(self):
+        lines = self.text.split('\n')
+        sections = 0
+        for i in range(len(lines)):
+            if lines[i].endswith('+'):
+                sections += 1 
+        return sections - 1
+    
+    @property
+    def top_sections(self):
+        top_line = self.text.split('\n')[0]
+        return len(top_line.split('+')) - 2
+    
+    @property
+    def bottom_sections(self):
+        bottom_line = self.text.split('\n')[-1]
+        return len(bottom_line.split('+')) - 2
 
     def __lt__(self, other):
         """For sorting instances of this class"""
@@ -45,18 +73,18 @@ class Cell():
         other_bottom = other.row + other.row_count
 
         if (self_right == other_left and self_top == other_top and
-                self_bottom == other_bottom):
+                self_bottom == other_bottom and self.right_sections >= other.left_sections):
             return "RIGHT"
         elif (self_left == other_left and self_right == other_right and
-                self_top == other_bottom):
+                self_top == other_bottom and self.top_sections >= other.bottom_sections):
             return "TOP"
         elif (self_left == other_left and
               self_right == other_right and
-              self_bottom == other_top):
+              self_bottom == other_top and self.bottom_sections >= other.top_sections):
             return "BOTTOM"
         elif (self_left == other_right and
               self_top == other_top and
-              self_bottom == other_bottom):
+              self_bottom == other_bottom and self.left_sections >= other.right_sections):
             return "LEFT"
         else:
             return "NONE"
@@ -74,7 +102,7 @@ class Cell():
             self.column_count += other.column_count
             return True
         elif self.mergeableDirection(other) == "TOP":
-            self_lines.pop(0)
+            other_lines.pop(-1)
             other_lines.extend(self_lines)
             self.text = "\n".join(other_lines)
             self.row_count += other.row_count
@@ -89,7 +117,7 @@ class Cell():
             return True
         elif self.mergeableDirection(other) == "LEFT":
             for i in range(len(self_lines)):
-                self_lines[i] = other_lines[i] + self_lines[i][1::]
+                self_lines[i] = other_lines[i][0:-1] + self_lines[i]
             self.text = "\n".join(self_lines)
             self.column_count += other.column_count
             self.row = other.row
@@ -369,6 +397,7 @@ def data2rst(table, spans=[[[0, 0]]], use_headers=True):
         cells.append(cell)
     cells = list(sorted(cells))
     output = mergeCells(cells)
+
     return output
 
 

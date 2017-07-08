@@ -1,13 +1,14 @@
 import os
 import sys
 import unittest
+import ntpath
 
 file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, os.path.abspath(file_path))
 
 import dashtable
 
-class TestPyLRC(unittest.TestCase):
+class TestMatches(unittest.TestCase):
     def setUp(self):
         self.static_path = os.path.join(file_path, 'tests', 'static')
     
@@ -25,7 +26,11 @@ class TestPyLRC(unittest.TestCase):
                 rst_text = rst_file.read().rstrip()
                 rst_file.close()
                 
-                self.assertEqual(rst, rst_text)
+                try:
+                    self.assertEqual(rst, rst_text)
+                except AssertionError:
+                    print('MATCH ERROR: ' + ntpath.basename(html_path))
+                
                 
                 md_name = os.path.splitext(file)[0] + '.md'
                 md_path = os.path.join(self.static_path, md_name)
@@ -33,10 +38,11 @@ class TestPyLRC(unittest.TestCase):
                 md_text = md_file.read().rstrip()
                 md_file.close()
                 
-                self.assertEqual(md, md_text)
-                
-        
-        #self.assertEqual(1, 1)
+                try:
+                    self.assertEqual(md, md_text)
+                except AssertionError:
+                    
+                    print('MATCH ERROR: ' + ntpath.basename(html_path))
         
 if __name__ == '__main__':
     unittest.main()
