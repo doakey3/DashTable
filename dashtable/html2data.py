@@ -187,6 +187,7 @@ def extractTable(html_string, row_count, column_count):
             data_table[-1].append(None)
 
     soup = BeautifulSoup(html_string, 'html.parser')
+
     table = soup.find('table')
 
     if not table:
@@ -224,7 +225,7 @@ def extractTable(html_string, row_count, column_count):
                 for column_prime in range(column, column + c_span_count):
                     if row_prime == row and column_prime == column:
                         text = str(td.text.strip())
-                        text = str(text.encode('ascii', 'ignore'))[2:-1]
+                        #text = str(text.encode('ascii', 'ignore'))[2:-1]
                         text = text.replace('\\n','\n')
                         
                         data_table[row_prime][column_prime] = text
@@ -254,8 +255,9 @@ def html2data(html_string):
             spans.pop(count)
         else:
             count += 1
-
+            
     table = extractTable(html_string, row_count, column_count)
+
     use_headers = headersPresent(html_string)
 
     return table, spans, use_headers

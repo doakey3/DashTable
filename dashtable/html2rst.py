@@ -22,6 +22,7 @@ def html2rst(html_string, force_headers=False):
         html_string = ''.join(lines)
 
     table_data, spans, use_headers = html2data(html_string)
+    
     if table_data == '':
         return ''
     if force_headers:
