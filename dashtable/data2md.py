@@ -47,7 +47,8 @@ def data2md(table):
 if __name__ == '__main__':
 
     table = [['column 1', 'col 2', 'c3'],
-             ['hspan', 'animal', 'test'],
+             ['hspan', 'Guy Brantôme', 'test'],
              ['vspan', 'multispan', 'example']]
 
     print(data2md(table))
+

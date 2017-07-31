@@ -1,10 +1,10 @@
 try:
     from .dashutils import lineBreak, getSpan, getSpanColumnCount
-    from .dashutils import sortSpans, addCushions
+    from .dashutils import sortSpans, addCushions, centerWord
 
 except (SystemError, ModuleNotFoundError, ImportError):
     from dashutils import lineBreak, getSpan, getSpanColumnCount
-    from dashutils import sortSpans, addCushions
+    from dashutils import sortSpans, addCushions, centerWord
 
 class TableTypeError(Exception):
     """Raised if a Table is not a List of Lists"""
@@ -55,6 +55,16 @@ class Cell():
     def bottom_sections(self):
         bottom_line = self.text.split('\n')[-1]
         return len(bottom_line.split('+')) - 2
+
+    def center_cell(self):
+        lines = self.text.split('\n')
+        width = len(lines[0]) - 2
+        
+        for i in range(1, len(lines) - 1):
+            truncated = lines[i][1:len(lines[i]) - 1].lstrip().rstrip()
+            centered = centerWord(width, truncated)
+            lines[i] = lines[i][0] + centered + lines[i][len(lines[i]) - 1]
+        self.text = '\n'.join(lines)
 
     def __lt__(self, other):
         """For sorting instances of this class"""
@@ -376,7 +386,7 @@ def checkSpan(span):
             checked.extend(span)
             raise SpanError('Somethings wrong with the span group: ' + str(checked))
 
-def data2rst(table, spans=[[[0, 0]]], use_headers=True):
+def data2rst(table, spans=[[[0, 0]]], use_headers=True, center_cells=False):
     checkTable(table)
 
     table = addCushions(table)
@@ -396,6 +406,11 @@ def data2rst(table, spans=[[[0, 0]]], use_headers=True):
         cell = makeTextCell(table, span, widths, heights, use_headers)
         cells.append(cell)
     cells = list(sorted(cells))
+    
+    if center_cells:
+        for cell in cells:
+            cell.center_cell()
+            
     output = mergeCells(cells)
 
     return output
@@ -405,7 +420,7 @@ if __name__ == "__main__":
 
     table = [
         ["Header 1", "Header 2", "Header3", "Header 4"],
-        ["row 1, column 1", "column 2", "column 3", "column 4"],
+        ["row 1, column 1", "Guy Brantôme", "column 3", "column 4"],
         ["row 2", "Cells span columns.", "", ""],
         ["row 3", "Cells\nspan rows.", "- hi\n- sup?\n- bye", ""],
         ["row 4", "", "", ""]
@@ -418,4 +433,4 @@ if __name__ == "__main__":
 
     my_spans = [span0, span1, span2]
     
-    print(data2rst(table, spans=my_spans, use_headers=True))
+    print(data2rst(table, spans=my_spans, use_headers=True, center_cells=True))

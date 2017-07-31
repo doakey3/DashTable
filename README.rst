@@ -54,14 +54,14 @@ html2rst requires a filepath or a string to work.
     from dashtable import html2rst
 
     filepath = "path/to/html/file.html"
-    print(html2rst(filepath, force_headers=False))
+    print(html2rst(filepath, force_headers=False, center_cells=False))
 
 
 Command Line Method:
 
 ::
 
-    python html2rst.py input.html output.rst --force_headers
+    python html2rst.py input.html output.rst --force_headers --center_cells
 
 HTML to MarkDown Table
 ----------------------
@@ -99,7 +99,7 @@ List of Lists to reStructered Table
 
     my_spans = [column_span, row_span]
 
-    print(data2rst(table, spans=my_spans, use_headers=True))
+    print(data2rst(table, spans=my_spans, use_headers=True, center_cells=False))
 
 List of Lists to Markdown Table
 -------------------------------

@@ -1,3 +1,5 @@
+import math
+
 def getSpanColumnCount(span):
     """Gets the number of columns inluded in a span"""
     columns = 1
@@ -43,25 +45,16 @@ def lineBreak(count, symbol):
     return x
 
 
-def centerWord(spaces, word):
-    '''
-    given a number of spaces, creates a string that has the word
-    centered with half the space on each side.
-    '''
-    word = word.lstrip().rstrip()
-    if len(word) > spaces:
-        return word
-    extra_space = spaces - len(word)
-    space1 = int(extra_space/2)
-    space2 = extra_space - space1
-    intro = ''
-    for i in range(space1):
-        intro = intro + ' '
-    outro = ''
-    for i in range(space2):
-        outro = outro + ' '
-    string = intro + word + outro
-    return string
+def centerWord(space, line):
+    """Centers text to available space"""
+    left = math.floor((space - len(line)) / 2)
+    right = math.ceil((space - len(line)) / 2)
+    
+    left_space = lineBreak(left, ' ')
+    right_space = lineBreak(right, ' ')
+        
+    line = left_space + line + right_space
+    return line
 
 
 def addCushions(table):
