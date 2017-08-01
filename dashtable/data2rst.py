@@ -1,3 +1,5 @@
+import math
+
 try:
     from .dashutils import lineBreak, getSpan, getSpanColumnCount
     from .dashutils import sortSpans, addCushions, centerWord
@@ -63,8 +65,51 @@ class Cell():
         for i in range(1, len(lines) - 1):
             truncated = lines[i][1:len(lines[i]) - 1].lstrip().rstrip()
             centered = centerWord(width, truncated)
-            lines[i] = lines[i][0] + centered + lines[i][len(lines[i]) - 1]
+            lines[i] = lines[i][0] + centered + lines[i][-1]
         self.text = '\n'.join(lines)
+        self.v_center_cell()
+        
+    def v_center_cell(self):
+        lines = self.text.split('\n')
+        width = len(lines[0]) - 2
+        
+        pre_space = 0
+        post_space = 0
+        
+        i = 1
+        while lines[i][1:len(lines[i]) - 1].lstrip() == '':
+            pre_space += 1
+            i += 1
+        
+        i = len(lines) - 2
+        while lines[i][1:len(lines[i]) - 1].lstrip() == '':
+            post_space += 1
+            i -= 1
+        total_space = pre_space + post_space
+        
+        just_text = []
+        for i in range(1, len(lines) - 1):
+            if lines[i][1:len(lines[i]) - 1].lstrip() != '':
+                just_text.append(lines[i][1:len(lines[i]) - 1])
+        
+        top = math.floor(total_space / 2)
+        
+        # top spaces
+        for i in range(1, top + 1):
+            lines[i] = lines[i][0] + lineBreak(width, ' ') + lines[i][-1]
+        
+        # text
+        count = 0
+        for i in range(top + 1, top + 1 + len(just_text)):
+            lines[i] = lines[i][0] + just_text[count] + lines[i][-1]
+            count += 1
+        
+        # bottom spaces
+        for i in range(top + 1 + len(just_text), len(lines) - 1):
+            lines[i] = lines[i][0] + lineBreak(width, ' ') + lines[i][-1]
+        
+        self.text = '\n'.join(lines)
+            
 
     def __lt__(self, other):
         """For sorting instances of this class"""
@@ -422,7 +467,7 @@ if __name__ == "__main__":
         ["Header 1", "Header 2", "Header3", "Header 4"],
         ["row 1, column 1", "Guy Brantôme", "column 3", "column 4"],
         ["row 2", "Cells span columns.", "", ""],
-        ["row 3", "Cells\nspan rows.", "- hi\n- sup?\n- bye", ""],
+        ["row 3", "Cells\nspan rows.", "- hi", ""],
         ["row 4", "", "", ""]
     ]
 
