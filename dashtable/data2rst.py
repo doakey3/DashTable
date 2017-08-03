@@ -386,12 +386,9 @@ def checkTable(table):
         raise(TableContentError("Table must contain at least one row and one column"))
     for i in range(len(table)):
         if not type(table[i]) is list:
-            raise(TableTypeError("Table must be a list of lists of strings  "))
+            raise(TableTypeError("Table must be a list of lists of strings"))
         if not len(table[i]) == len(table[0]):
             raise(TableContentError("Each row must have the same number of columns"))
-        for item in table[i]:
-            if not type(item) is str:
-                raise(TableContentError("Table must be a list of lists of strings"))
 
     
 def checkSpan(span):
@@ -433,6 +430,10 @@ def checkSpan(span):
 
 def data2rst(table, spans=[[[0, 0]]], use_headers=True, center_cells=False):
     checkTable(table)
+    
+    for row in range(len(table)):
+        for column in range(len(table[row])):
+            table[row][column] = str(table[row][column])
 
     table = addCushions(table)
     spans = sortSpans(spans)
@@ -465,7 +466,7 @@ if __name__ == "__main__":
 
     table = [
         ["Header 1", "Header 2", "Header3", "Header 4"],
-        ["row 1, column 1", "Guy Brantôme", "column 3", "column 4"],
+        ["row 1, column 1", "Guy Brantôme", "column 3", 4],
         ["row 2", "Cells span columns.", "", ""],
         ["row 3", "Cells\nspan rows.", "- hi", ""],
         ["row 4", "", "", ""]

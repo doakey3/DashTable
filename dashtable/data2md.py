@@ -18,6 +18,11 @@ def data2md(table):
     """
     Creates a table in the markdown table format
     """
+    
+    for row in range(len(table)):
+        for column in range(len(table[row])):
+            table[row][column] = str(table[row][column])
+    
     table = removeNewlines(table)
     table = addCushions(table)
 
@@ -47,7 +52,7 @@ def data2md(table):
 if __name__ == '__main__':
 
     table = [['column 1', 'col 2', 'c3'],
-             ['hspan', 'Guy Brantôme', 'test'],
+             ['hspan', 'Guy Brantôme', 4],
              ['vspan', 'multispan', 'example']]
 
     print(data2md(table))
