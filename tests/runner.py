@@ -10,7 +10,12 @@ path = os.path.join(os.getcwd(), 'static')
 
 for file in os.listdir(path):
     if file.endswith('.html'):
-        text = open(os.path.join(path, file), 'r').read()
+        text = open(os.path.join(path, file), 'r', encoding='UTF-8').read()
         data, spans, use_headers = dashtable.html2data(text)
         if not data == '':
-            print(dashtable.data2rst(data, spans, use_headers=True, center_cells=True))
+            table = dashtable.data2rst(data, spans, use_headers=True, center_cells=True)
+            try:
+                print(table)
+            except UnicodeEncodeError:
+                
+                print(table.encode('utf-8'))

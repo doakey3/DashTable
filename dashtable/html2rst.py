@@ -1,10 +1,5 @@
-try:
-    from .html2data import html2data
-    from .data2rst import data2rst
-
-except (SystemError, ModuleNotFoundError, ImportError):
-    from html2data import html2data
-    from data2rst import data2rst
+from .html2data import html2data
+from .data2rst import data2rst
 
 import os
 import argparse
@@ -16,7 +11,7 @@ def html2rst(html_string, force_headers=False, center_cells=False):
     """
 
     if os.path.isfile(html_string):
-        file = open(html_string, 'r')
+        file = open(html_string, 'r', encoding='utf-8')
         lines = file.readlines()
         file.close()
         html_string = ''.join(lines)
@@ -44,6 +39,8 @@ def cmdline():
                         action="store_true")
     parser.add_argument("--center_cells", help="Center the content of each cell",
                         action="store_true")
+    parser.add_argument("--center_headers", help="Center the content of each header",
+                        action="store_true")
     args = parser.parse_args()
 
     file = open(args.input_file, 'r')
@@ -51,7 +48,10 @@ def cmdline():
     file.close()
     html_string = ''.join(lines)
 
-    output_string = html2rst(html_string, force_headers=args.force_headers, center_cells=args.center_cells)
+    output_string = html2rst(html_string, 
+                             force_headers=args.force_headers, 
+                             center_cells=args.center_cells, 
+                             center_headers=args.center_headers)
 
     file = open(args.output_file, 'w')
     file.write(output_string)

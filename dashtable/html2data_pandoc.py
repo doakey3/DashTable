@@ -1,47 +1,33 @@
+"""
+This is much slower than using the regular html2data, but pandoc has
+much better conversion of html to rst than my little conversion function
+
+If you're having problems with the other one, you may want to install
+pandoc and give this script a whirl
+
+Unfortunately there is no good python library for converting html to rst
+maybe I'll write one but it's going to be a bit of a project
+"""
+
+import subprocess
+import os
+
 from bs4.element import Tag
 from bs4 import BeautifulSoup
 
 from .dashutils import getSpanRowCount, sortSpans, getSpan
 
-def convertRichText(html_string):
-    """Fix the newlines, bolds, italics"""
+def convertHTML(html):
+    fpath = os.path.join(os.path.expanduser('~'), '.html2data_pandoc.html')
+    f = open(fpath, 'w', encoding='utf-8')
+    f.write(html)
+    f.close()
     
-    html_string = html_string.replace('<br />', '<br>')
-    html_string = html_string.replace('<br/>', '<br>')
-    
-    # normalize tags
-    soup = BeautifulSoup(html_string, 'html.parser')
-    for br in soup.find_all('br'):
-        normalized_br = soup.new_tag('br')
-        normalized_br.contents = br.contents
-        br.replace_with(normalized_br)
-    
-    for p in soup.find_all('p'):
-        normalized_p = soup.new_tag('p')
-        normalized_p.contents = p.contents
-        p.replace_with(normalized_p)
-    
-    for b in soup.find_all('b'):
-        normalized_b = soup.new_tag('b')
-        normalized_b.contents = b.contents
-        b.replace_with(normalized_b)
-    
-    for i in soup.find_all('i'):
-        normalized_i = soup.new_tag('i')
-        normalized_i.contents = i.contents
-        i.replace_with(normalized_i)
+    rst = subprocess.check_output(['pandoc', '--from=html', '--to=rst', fpath]).decode('utf-8')
 
-    html_string = str(soup)
-
-    html_string = html_string.replace('<br/>', '<br>')
-    html_string = html_string.replace('<br>', '<br>\n')
-    html_string = html_string.replace('<p>', '<p>\n')
-    html_string = html_string.replace('<b>', '**')
-    html_string = html_string.replace('</b>', '**')
-    html_string = html_string.replace('<i>', '*')
-    html_string = html_string.replace('</i>', '*')
-    return html_string
-
+    os.remove(fpath)
+    
+    return rst
 
 def findUnassignedCell(table):
     """
@@ -173,8 +159,6 @@ def extractSpans(html_string):
 
 def extractTable(html_string, row_count, column_count):
     """Convert an html string to data table"""
-    html_string = convertRichText(html_string)
-
     data_table = []
     for row in range(0, row_count):
         data_table.append([])
@@ -220,7 +204,7 @@ def extractTable(html_string, row_count, column_count):
                 for column_prime in range(column, column + c_span_count):
                     if row_prime == row and column_prime == column:
                         text = str(td.text.strip())
-                        #text = str(text.encode('ascii', 'ignore'))[2:-1]
+                        text = convertHTML(text)
                         text = text.replace('\\n','\n')
                         
                         data_table[row_prime][column_prime] = text
@@ -239,7 +223,7 @@ def extractTable(html_string, row_count, column_count):
     return data_table
 
 
-def html2data(html_string):
+def html2data_pandoc(html_string):
     spans = extractSpans(html_string)
     column_count = getColumnCount(html_string)
     row_count = getRowCount(spans)

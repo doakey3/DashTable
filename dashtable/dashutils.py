@@ -77,3 +77,12 @@ def removeNewlines(table):
         for c in range(len(table[r])):
             table[r][c] = table[r][c].replace('\n', ' ')
     return table
+    
+def isOnly(text, char_list):
+    text = text.strip()
+    if text == '':
+        return False
+    for i in range(len(text)):
+        if text[i] not in char_list:
+            return False
+    return True

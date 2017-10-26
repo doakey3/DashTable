@@ -18,7 +18,7 @@ Introduction
 
 Use DashTable to create ASCII tables like this reStructured_ Table:
 
-.. _reStructured: http://docutils.sourceforge.net/rst.html
+.. _reStructured: http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables
 
 ::
 
@@ -61,7 +61,7 @@ Command Line Method:
 
 ::
 
-    python html2rst.py input.html output.rst --force_headers --center_cells
+    python html2rst.py input.html output.rst --force_headers --center_cells --center_headers
 
 HTML to MarkDown Table
 ----------------------
@@ -99,7 +99,7 @@ List of Lists to reStructered Table
 
     my_spans = [column_span, row_span]
 
-    print(data2rst(table, spans=my_spans, use_headers=True, center_cells=False))
+    print(data2rst(table, spans=my_spans, use_headers=True, center_cells=False, center_headers=True))
 
 List of Lists to Markdown Table
 -------------------------------

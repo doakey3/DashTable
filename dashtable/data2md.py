@@ -1,9 +1,4 @@
-try:
-    from .dashutils import lineBreak, centerWord, removeNewlines, addCushions
-
-except (SystemError, ModuleNotFoundError, ImportError):
-    from dashutils import lineBreak, centerWord, removeNewlines, addCushions
-
+from .dashutils import lineBreak, centerWord, removeNewlines, addCushions
 
 def getColumnWidth(column, table):
     width = 3
@@ -47,13 +42,4 @@ def data2md(table):
     split.pop()
 
     return '\n'.join(split)
-
-
-if __name__ == '__main__':
-
-    table = [['column 1', 'col 2', 'c3'],
-             ['hspan', 'Guy Brantôme', 4],
-             ['vspan', 'multispan', 'example']]
-
-    print(data2md(table))
 

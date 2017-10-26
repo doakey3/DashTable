@@ -28,7 +28,7 @@ class TestMatches(unittest.TestCase):
                 
                 try:
                     self.assertEqual(rst, rst_text)
-                except AssertionError:)
+                except AssertionError:
                     print('MATCH ERROR: ' + ntpath.basename(html_path))
                 
                 

@@ -1,10 +1,5 @@
-try:
-    from .html2data import html2data
-    from .data2md import data2md
-
-except (SystemError, ModuleNotFoundError, ImportError):
-    from html2data import html2data
-    from data2md import data2md
+from .html2data import html2data
+from .data2md import data2md
 
 import os
 import argparse
@@ -16,7 +11,7 @@ def html2md(html_string):
     """
 
     if os.path.isfile(html_string):
-        file = open(html_string, 'r')
+        file = open(html_string, 'r', encoding='utf-8')
         lines = file.readlines()
         file.close()
         html_string = ''.join(lines)
@@ -49,7 +44,3 @@ def cmdline():
     file = open(args.output_file, 'w')
     file.write(output_string)
     file.close()
-
-if __name__ == '__main__':
-    
-    cmdline()

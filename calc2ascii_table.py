@@ -12,6 +12,8 @@ Linux
 
   /home/<username>/.config/libreoffice/4/user/Scripts/python
 
+If the Scripts folder isn't there, make one.
+
 Windows
 -------
 
