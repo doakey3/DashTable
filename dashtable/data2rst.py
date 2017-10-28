@@ -157,7 +157,10 @@ class Cell():
             self.column_count += other.column_count
             return True
         elif self.mergeableDirection(other) == "TOP":
-            other_lines.pop(-1)
+            if self_lines[0].count('+') > other_lines[-1].count('+'):
+                other_lines.pop(-1)
+            else:
+                self_lines.pop(0)
             other_lines.extend(self_lines)
             self.text = "\n".join(other_lines)
             self.row_count += other.row_count
@@ -165,7 +168,10 @@ class Cell():
             self.column = other.column
             return True
         elif self.mergeableDirection(other) == "BOTTOM":
-            other_lines.pop(0)
+            if self_lines[-1].count('+') > other_lines[0].count('+'):
+                other_lines.pop(0)
+            else:
+                self_lines.pop(-1)
             self_lines.extend(other_lines)
             self.text = "\n".join(self_lines)
             self.row_count += other.row_count
@@ -180,7 +186,6 @@ class Cell():
             return True
         else:
             return False
-
 
 def getLongestLineLength(text):
     """Get the length longest line in a paragraph"""

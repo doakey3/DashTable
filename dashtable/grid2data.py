@@ -65,3 +65,21 @@ def grid2data(text):
                 pass
     spans = sorted(spans)
     return table, spans, use_headers
+
+text = '''+------------+-------------+-----------+------------+
+| Header 1   | Header 2    | Header 3  | Header 4   |
++============+=============+===========+============+
+| body row 1 | column 2    | column 3               |
++------------+-------------+-----------+------------+
+| body row 2 | Cells may span columns. | body row 2 |
++------------+-------------+-----------+------------+
+| body row 3 | Cells may   | - Cells   | body row 3 |
++------------+ span rows.  | - contain +------------+
+| body row 4 |             | - blocks. | body row 4 |
++------------+-------------+-----------+------------+'''
+
+table, spans, use_headers = grid2data(text)
+
+f = open('/home/doakey/Desktop/test.txt', 'w')
+f.write(str(table) + '\n\n' + str(spans))
+f.close()

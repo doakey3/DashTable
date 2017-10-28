@@ -5,7 +5,7 @@ import os
 import argparse
 
 
-def html2rst(html_string, force_headers=False, center_cells=False):
+def html2rst(html_string, force_headers=False, center_cells=False, center_headers=False):
     """
     Convert a string or html file to an rst table string
     """
