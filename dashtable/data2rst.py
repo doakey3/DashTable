@@ -168,7 +168,7 @@ class Cell():
             self.column = other.column
             return True
         elif self.mergeableDirection(other) == "BOTTOM":
-            if self_lines[-1].count('+') > other_lines[0].count('+'):
+            if self_lines[-1].count('+') > other_lines[0].count('+') or self.is_header:
                 other_lines.pop(0)
             else:
                 self_lines.pop(-1)
