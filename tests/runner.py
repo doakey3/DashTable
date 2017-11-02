@@ -13,7 +13,7 @@ for file in os.listdir(path):
         text = open(os.path.join(path, file), 'r', encoding='UTF-8').read()
         data, spans, use_headers = dashtable.html2data(text)
         if not data == '':
-            table = dashtable.data2rst(data, spans, use_headers=True, center_cells=True)
+            table = dashtable.data2rst(data, spans, use_headers=True, center_headers=True, center_cells=True)
             try:
                 print(table)
             except UnicodeEncodeError:

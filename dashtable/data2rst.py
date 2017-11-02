@@ -1,7 +1,7 @@
 import math
 
 from .dashutils import lineBreak, getSpan, getSpanColumnCount
-from .dashutils import sortSpans, addCushions, centerWord, isOnly
+from .dashutils import sortSpans, addCushions, isOnly
 
 class TableTypeError(Exception):
     """Raised if a Table is not a List of Lists"""
@@ -60,53 +60,75 @@ class Cell():
 
     def h_center_cell(self):
         lines = self.text.split('\n')
-        width = len(lines[0]) - 2
+        cell_width = len(lines[0]) - 2
+        
+        truncated_lines = []
+        for i in range(1, len(lines) - 1):
+            truncated = lines[i][2:len(lines[i]) - 2].rstrip()
+            truncated_lines.append(truncated)
+
+        truncated_lines.append('')
+        truncated_lines.insert(0, '')
+        
+        max_line_length = len(max(truncated_lines, key=len))
+        remainder = cell_width - max_line_length
+        left_width = math.floor(remainder / 2)
+        left_space = lineBreak(left_width, ' ')
+
+        for i in range(len(truncated_lines)):
+            truncated_lines[i] = left_space + truncated_lines[i]
+            right_width = cell_width - len(truncated_lines[i])
+            truncated_lines[i] += lineBreak(right_width, ' ')
+            
         
         for i in range(1, len(lines) - 1):
-            truncated = lines[i][1:len(lines[i]) - 1].lstrip().rstrip()
-            centered = centerWord(width, truncated)
-            lines[i] = lines[i][0] + centered + lines[i][-1]
+            lines[i] = lines[i][0] + truncated_lines[i] + lines[i][-1]
+        
         self.text = '\n'.join(lines)
         self.v_center_cell()
         
     def v_center_cell(self):
         lines = self.text.split('\n')
-        width = len(lines[0]) - 2
+        cell_width = len(lines[0]) - 2
         
-        pre_space = 0
-        post_space = 0
-        
-        i = 1
-        while lines[i][1:len(lines[i]) - 1].lstrip() == '':
-            pre_space += 1
-            i += 1
-        
-        i = len(lines) - 2
-        while lines[i][1:len(lines[i]) - 1].lstrip() == '':
-            post_space += 1
-            i -= 1
-        total_space = pre_space + post_space
-        
-        just_text = []
+        truncated_lines = []
         for i in range(1, len(lines) - 1):
-            if lines[i][1:len(lines[i]) - 1].lstrip() != '':
-                just_text.append(lines[i][1:len(lines[i]) - 1])
+            truncated = lines[i][1:len(lines[i]) - 1]
+            truncated_lines.append(truncated)
         
-        top = math.floor(total_space / 2)
+        total_height = len(truncated_lines)
         
-        # top spaces
-        for i in range(1, top + 1):
-            lines[i] = lines[i][0] + lineBreak(width, ' ') + lines[i][-1]
+        above_trash_count = 0
+        for i in range(len(truncated_lines)):
+            if truncated_lines[i].rstrip() == '':
+                above_trash_count += 1
+            else:
+                break
         
-        # text
-        count = 0
-        for i in range(top + 1, top + 1 + len(just_text)):
-            lines[i] = lines[i][0] + just_text[count] + lines[i][-1]
-            count += 1
+        below_trash_count = 0
+        for i in reversed(range(len(truncated_lines))):
+            if truncated_lines[i].rstrip() == '':
+                below_trash_count += 1
+            else:
+                break
+                
+        significant_lines = truncated_lines[above_trash_count: len(truncated_lines) - below_trash_count]
         
-        # bottom spaces
-        for i in range(top + 1 + len(just_text), len(lines) - 1):
-            lines[i] = lines[i][0] + lineBreak(width, ' ') + lines[i][-1]
+        remainder = total_height - len(significant_lines)
+        blank = lineBreak(cell_width, ' ')
+        above_height = math.floor(remainder / 2)
+        for i in range(0, above_height):
+            significant_lines.insert(0, blank)
+        
+        below_height = math.ceil(remainder / 2)
+        for i in range(0, below_height):
+            significant_lines.append(blank)
+        
+        significant_lines.insert(0, '')
+        significant_lines.append('')
+        
+        for i in range(1, len(lines) - 1):
+            lines[i] = lines[i][0] + significant_lines[i] + lines[i][-1]
         
         self.text = '\n'.join(lines)
             
@@ -302,35 +324,41 @@ def getHeights(table, spans):
     heights = []
     for row in table:
         heights.append(-1)
+    
+    for row in range(len(table)):
+        for column in range(len(table[row])):
+            text = table[row][column]
+            span = getSpan(spans, row, column)
+            row_count = getSpanRowCount(span)
+            height = len(text.split('\n'))
+            if row_count == 1 and height > heights[row]:
+                heights[row] = height
 
     for row in range(len(table)):
         for column in range(len(table[row])):
             span = getSpan(spans, row, column)
-            text_row = span[0][0]
-            text_column = span[0][1]
-            text = table[text_row][text_column]
             row_count = getSpanRowCount(span)
-            avg = len(text.split("\n")) / row_count
-            key = str(span)
-            if avg > heights[row]:
-                span_remainders[key] += avg - int(avg)
-                heights[row] = int(avg)
-            elif avg + span_remainders[key] < heights[row]:
-                span_remainders[key] += avg - int(avg)
-            elif avg + span_remainders[key] == heights[row]:
-                span_remainders[key] = 0
-            elif avg + span_remainders[key] > heights[row]:
-                heights[row] = int(avg + span_remainders[key])
-                span_remainders[key] += avg
-                span_remainders[key] -= int(span_remainders[key])
+            if row_count > 1:
+                text_row = span[0][0]
+                text_column = span[0][1]
+                text = table[text_row][text_column]
+                height = len(text.split('\n')) - (row_count - 1)
+                add_row = 0
+                while height > sum(heights[text_row:text_row + row_count]):
+                    heights[text_row + add_row] += 1
+                    if add_row + 1 < row_count:
+                        add_row += 1
+                    else:
+                        add_row = 0
     return heights
 
-def getSimpleWidths(table, spans):
-    """Assign widths to all columns based only on single-column spans"""
+def getWidths(table, spans):
+    """Get the widths of the columns of the output table"""
+
     widths = []
     for column in table[0]:
         widths.append(3)
-
+    
     for row in range(len(table)):
         for column in range(len(table[row])):
             span = getSpan(spans, row, column)
@@ -342,12 +370,6 @@ def getSimpleWidths(table, spans):
                 length = getLongestLineLength(text)
                 if length > widths[column]:
                     widths[column] = length
-    return widths
-
-def getWidths(table, spans):
-    """Get the widths of the columns of the output table"""
-
-    widths = getSimpleWidths(table, spans)
 
     for row in range(len(table)):
         for column in range(len(table[row])):

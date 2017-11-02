@@ -24,14 +24,15 @@ def make_span(row, column, extra_rows, extra_columns):
 
 def grid2data(text):
     '''Convert Grid table to data (the kind used by Dashtable'''
-    
     text = text.strip()
-    
-    parser = docutils.parsers.rst.tableparser.GridTableParser()
     lines = text.split('\n')
+    for i in range(len(lines)):
+        lines[i] = lines[i].strip()
+        
+    parser = docutils.parsers.rst.tableparser.GridTableParser()
     grid_data = parser.parse(docutils.statemachine.StringList(list(lines)))
     grid_data = list(grid_data)
-    
+
     column_widths = grid_data.pop(0)
     column_count = len(column_widths)
     
