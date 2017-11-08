@@ -16,9 +16,9 @@ Video Tutorial
 Introduction
 ============
 
-Use DashTable to create ASCII tables like this reStructured_ Table:
+Use DashTable to create ASCII tables like this reStructuredText_ Table:
 
-.. _reStructured: http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables
+.. _reStructuredText: http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables
 
 ::
 
@@ -44,8 +44,8 @@ Installation
 Example Usage
 =============
 
-HTML to reStructured Table
---------------------------
+HTML to reStructuredText Table
+------------------------------
 
 html2rst requires a filepath or a string to work.
 
@@ -81,8 +81,8 @@ Command line method:
 
     python html2md.py input.html output.md
 
-List of Lists to reStructered Table
------------------------------------
+List of Lists to reStructeredText Table
+---------------------------------------
 
 .. code-block:: python
 
