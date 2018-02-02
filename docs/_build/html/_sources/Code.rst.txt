@@ -1,4 +1,0 @@
-Code
-====
-.. automodule:: dashtable
-    :members:
