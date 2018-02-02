@@ -11,9 +11,9 @@ Welcome to dashtable's documentation!
     :caption: Contents:
 
     About
+    Installation
     Dependencies
     Code
-
 
 Indices and tables
 ==================

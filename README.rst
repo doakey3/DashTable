@@ -10,7 +10,7 @@ tables and Markdown tables, as well as methods for generating data from
 these text-tables.
 
 Methods
--------
+=======
 :html2rst:       Convert html table to `RST grid table`_
 :html2md:        Convert html table to Markdown table
 :data2md:        Convert a list of lists of strings to Markdown Table
@@ -25,6 +25,33 @@ Methods
 .. _RST grid table: http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables
 .. _simple RST Table: http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables
 
+Installation
+============
+dashtable can be installed using pip::
+
+    sudo pip install dashtable
+
+Depending on how you'd like to use dashtable, you may need to install
+some dependencies.
+
+Dependencies
+============
+Several of the functions in dashtable have no outside requirements.
+However, for the following functions you will need to install certain
+dependencies:
+
+:html2rst: BeautifulSoup_, pandoc_ (optional)
+:html2md: BeautifulSoup_
+:html2data: BeautifulSoup_, pandoc_ (optional)
+:grid2data: docutils_
+:simple2data: docutils_
+
+.. _docutils: http://docutils.sourceforge.net/
+.. _pandoc: https://pandoc.org/
+.. _BeautifulSoup: https://www.crummy.com/software/BeautifulSoup/
+
 Usage
 -----
-Complete documentation on usage can be found on readthedocs.
+Complete documentation on usage can be found on `Read the Docs`_.
+
+.. _Read the Docs: http://dashtable.readthedocs.io/en/latest/Code.html
