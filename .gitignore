@@ -1,0 +1,13 @@
+__pycache__
+dist
+*.egg-info
+
+docs/_build
+docs/_static
+docs/_templates
+docs/make.py
+docs/Makefile
+docs/html
+
+linker.py
+
