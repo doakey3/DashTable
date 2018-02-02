@@ -1,118 +1,30 @@
-.. image:: https://img.shields.io/badge/Donate-PayPal-green.svg
-    :target: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X9KC9TLLXPQWA
-
 =========
 DashTable
 =========
+When it comes to converting html to rst, pandoc_ does an excellent
+job... except for tables. dashtable is designed to fill this gap by
+creating a way to convert html tables into reStructuredText or Markdown.
 
-.. contents::
+dashtable also has functions for converting data to reStructuredText
+tables and Markdown tables, as well as methods for generating data from
+these text-tables.
 
-Video Tutorial
-==============
+Methods
+-------
+:html2rst:       Convert html table to `RST grid table`_
+:html2md:        Convert html table to Markdown table
+:data2md:        Convert a list of lists of strings to Markdown Table
+:data2rst:       Convert a list of lists of strings to `RST grid Table`_
+:data2md:        Convert a list of lists of strings to a Markdown Table
+:data2simplerst: Convert a list of lists of strings to a `simple RST
+                 Table`_
+:grid2data:      Convert an `RST grid table`_ to data
+:simple2data:    Convert a `simple RST table`_ to data
 
-.. image:: http://i.imgur.com/v1rGCHn.png
-    :target: https://www.youtube.com/watch?v=bdcswQq4lIM&feature=youtu.be
+.. _pandoc: https://pandoc.org/
+.. _RST grid table: http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables
+.. _simple RST Table: http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables
 
-Introduction
-============
-
-Use DashTable to create ASCII tables like this reStructuredText_ Table:
-
-.. _reStructuredText: http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables
-
-::
-
-    +------------+------------+------------+
-    | Header 1   | Header 2   | Header 3   |
-    +============+============+============+
-    | body row 1 | column 2   | column 3   |
-    +------------+------------+------------+
-    | body row 2 | Cells may span columns. |
-    +------------+------------+------------+
-    | body row 3 | Cells may  | - Cells    |
-    +------------+ span rows. | - contain  |
-    | body row 4 |            | - blocks.  |
-    +------------+------------+------------+
-
-Installation
-============
-
-::
-
-    pip install dashtable
-
-Example Usage
-=============
-
-HTML to reStructuredText Table
-------------------------------
-
-html2rst requires a filepath or a string to work.
-
-.. code-block:: python
-
-    from dashtable import html2rst
-
-    filepath = "path/to/html/file.html"
-    print(html2rst(filepath, force_headers=False, center_cells=False))
-
-
-Command Line Method:
-
-::
-
-    python html2rst.py input.html output.rst --force_headers --center_cells --center_headers
-
-HTML to MarkDown Table
-----------------------
-
-html2md requires a filepath or a string to work.
-
-.. code-block:: python
-
-    from dashtable import html2md
-
-    filepath = "path/to/html/file.html"
-    print(html2md(filepath))
-
-Command line method:
-
-::
-
-    python html2md.py input.html output.md
-
-List of Lists to reStructeredText Table
----------------------------------------
-
-.. code-block:: python
-
-    from dashtable import data2rst
-
-    table = [
-        ['Row\nSpan', 'Header'],
-        ['Cell', ''],
-        ['Column Span', '']
-        ]
-
-    column_span = ([0, 0], [1, 0])
-    row_span = ([2, 0], [2, 1])
-
-    my_spans = [column_span, row_span]
-
-    print(data2rst(table, spans=my_spans, use_headers=True, center_cells=False, center_headers=True))
-
-List of Lists to Markdown Table
--------------------------------
-
-.. code-block:: python
-
-    from dashtable import data2md
-
-    table = [
-        ['Header 1', 'Header 2', 'Header 3'],
-        ['Column 1', 'Column 2', 'Column 3']
-    ]
-
-    print(data2md(table))
-    
-
+Usage
+-----
+Complete documentation on usage can be found on readthedocs.

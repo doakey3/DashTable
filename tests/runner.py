@@ -17,5 +17,5 @@ for file in os.listdir(path):
             try:
                 print(table)
             except UnicodeEncodeError:
-                
+
                 print(table.encode('utf-8'))

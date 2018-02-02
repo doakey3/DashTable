@@ -8,7 +8,7 @@ for file in os.listdir(os.getcwd() + '/test_files'):
         f = open(path, 'r')
         lines = f.readlines()
         f.close()
-        
+
         string = ''.join(lines)
         converted_rst = html2rst(string)
         converted_md = html2md(string)
@@ -18,16 +18,16 @@ for file in os.listdir(os.getcwd() + '/test_files'):
         md_lines = md_file.readlines()
         md_file.close()
         md_string = ''.join(md_lines).rstrip()
-        
+
         if not md_string == converted_md:
             print('MarkDown Error: ' + file)
-            
+
         rst_name = os.path.splitext(path)[0] + '.rst'
         rst_file = open(rst_name, 'r')
         rst_lines = rst_file.readlines()
         rst_file.close()
         rst_string = ''.join(rst_lines).rstrip()
-        
+
         if not rst_string == converted_rst:
             print('reStructered Error: ' + file)
 
@@ -51,7 +51,7 @@ f.close()
 
 if not md_string == converted_md:
     print('Command Line Error for MarkDown')
-    
+
 f = open(rst_outfile, 'r')
 rst_string = ''.join(f.readlines())
 f.close()

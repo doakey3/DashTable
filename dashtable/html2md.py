@@ -1,13 +1,60 @@
+import os
 from .html2data import html2data
 from .data2md import data2md
-
-import os
-import argparse
 
 
 def html2md(html_string):
     """
-    Convert a string or html file to a markdown table string
+    Convert a string or html file to a markdown table string.
+
+    Parameters
+    ----------
+    html_string : str
+        Either the html string, or the filepath to the html
+
+    Returns
+    -------
+    str
+        The html table converted to a Markdown table
+
+    Notes
+    -----
+    This function requires BeautifulSoup_ to work.
+
+    Example
+    -------
+    >>> html_text = '''
+    ... <table>
+    ...     <tr>
+    ...         <th>
+    ...             Header 1
+    ...         </th>
+    ...         <th>
+    ...             Header 2
+    ...         </th>
+    ...         <th>
+    ...             Header 3
+    ...         </th>
+    ...     <tr>
+    ...         <td>
+    ...             <p>This is a paragraph</p>
+    ...         </td>
+    ...         <td>
+    ...             Just text
+    ...         </td>
+    ...         <td>
+    ...             Hot dog
+    ...         </td>
+    ...     </tr>
+    ... </table>
+    ... '''
+    >>> import dashtable
+    >>> print(dashtable.html2md(html_text))
+    |      Header 1       | Header 2  | Header 3 |
+    |---------------------|-----------|----------|
+    | This is a paragraph | Just text | Hot dog  |
+
+    .. _BeautifulSoup: https://www.crummy.com/software/BeautifulSoup/
     """
 
     if os.path.isfile(html_string):
@@ -21,26 +68,3 @@ def html2md(html_string):
         return ''
 
     return data2md(table_data)
-
-
-def cmdline():
-    """
-    Use command line to convert an input html file to markdown file
-    example: python html2md.py input.html output.md
-    """
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input_file", help="path to input html file")
-    parser.add_argument("output_file", help="path to output file")
-    args = parser.parse_args()
-
-    file = open(args.input_file, 'r')
-    lines = file.readlines()
-    file.close()
-    html_string = ''.join(lines)
-
-    output_string = html2md(html_string)
-
-    file = open(args.output_file, 'w')
-    file.write(output_string)
-    file.close()
