@@ -4,7 +4,7 @@ from .get_html_row_count import get_html_row_count
 from .extract_table import extract_table
 from .headers_present import headers_present
 
-def html2data(html_string, use_pandoc=False):
+def html2data(html_string):
     """
     Convert an html table to a data table and spans.
 
@@ -12,11 +12,6 @@ def html2data(html_string, use_pandoc=False):
     ----------
     html_string : str
         The string containing the html table
-    use_pandoc : bool
-        Whether or not to use pandoc_ to convert table cell contents into
-        rst before including them into the rst grid table. This is
-        slower, but accurate. Note that using this option will require
-        you to have pandoc_ installed.
 
     Returns
     -------
@@ -25,9 +20,6 @@ def html2data(html_string, use_pandoc=False):
         A span is a list of [row, column] pairs that define what cells
         are merged in a table.
     use_headers : bool
-
-
-    .. _pandoc: https://pandoc.org/
     """
     spans = extract_spans(html_string)
 
@@ -41,7 +33,7 @@ def html2data(html_string, use_pandoc=False):
         else:
             count += 1
 
-    table = extract_table(html_string, row_count, column_count, use_pandoc=use_pandoc)
+    table = extract_table(html_string, row_count, column_count)
 
     use_headers = headers_present(html_string)
 

@@ -1,8 +1,7 @@
 from .find_unassigned_table_cell import find_unassigned_table_cell
-from .pandoc_convert import pandoc_convert
+from .restructify import restructify
 
-
-def extract_table(html_string, row_count, column_count, use_pandoc=False):
+def extract_table(html_string, row_count, column_count):
     """
     Convert an html string to data table
 
@@ -11,9 +10,6 @@ def extract_table(html_string, row_count, column_count, use_pandoc=False):
     html_string : str
     row_count : int
     column_count : int
-    use_pandoc : bool, optional
-        If enabled, will use pandoc to convert the contents of each
-        table cell into rst.
 
     Returns
     -------
@@ -73,17 +69,12 @@ def extract_table(html_string, row_count, column_count, use_pandoc=False):
                 for column_prime in range(column, column + c_span_count):
                     if row_prime == row and column_prime == column:
 
-                        if use_pandoc:
-                            items = []
-                            for item in td.contents:
-                                items.append(str(item))
-                            string = '\n'.join(items).strip()
+                        items = []
+                        for item in td.contents:
+                            items.append(str(item))
+                        string = ''.join(items).strip()
 
-                            text = pandoc_convert(string).strip()
-
-                        else:
-                            text = str(td.text.strip())
-                            text = text.replace('\\n','\n')
+                        text = restructify(string).rstrip()
 
                         data_table[row_prime][column_prime] = text
                     else:

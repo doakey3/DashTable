@@ -1,5 +1,5 @@
 import math
-
+from .get_longest_line_length import get_longest_line_length
 
 def center_cell_text(cell):
     """
@@ -29,7 +29,7 @@ def center_cell_text(cell):
 
     truncated_lines.append('')
 
-    max_line_length = len(max(truncated_lines))
+    max_line_length = get_longest_line_length('\n'.join(truncated_lines))
     remainder = cell_width - max_line_length
 
     left_width = math.floor(remainder / 2)

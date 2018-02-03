@@ -1,10 +1,6 @@
 About
 =====
-When it comes to converting html to rst, pandoc_ does an excellent
-job... except for tables. dashtable is designed to fill this gap by
-creating a way to convert html tables into reStructuredText or Markdown.
-
-dashtable also has functions for converting data to reStructuredText
+dashtable has functions for converting data to reStructuredText
 tables and Markdown tables, as well as methods for generating data from
 these text-tables.
 
@@ -20,6 +16,5 @@ Methods
 :grid2data:      Convert an `RST grid table`_ to data
 :simple2data:    Convert a `simple RST table`_ to data
 
-.. _pandoc: https://pandoc.org/
 .. _RST grid table: http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables
 .. _simple RST Table: http://docutils.sourceforge.net/docs/user/rst/quickref.html#tables

@@ -11,3 +11,4 @@ from .get_span_row_count import get_span_row_count
 from .make_empty_table import make_empty_table
 from .make_span import make_span
 from .multis_2_mono import multis_2_mono
+from .get_longest_line_length import get_longest_line_length

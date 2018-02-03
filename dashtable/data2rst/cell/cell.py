@@ -1,3 +1,6 @@
+from .is_only import is_only
+
+
 class Cell():
     """
     Holds the text and data for an rst text cell
@@ -136,9 +139,9 @@ class Cell():
         """
         bottom_line = self.text.split('\n')[-1]
 
-        for char in bottom_line:
-            if char in ["+", "="]:
-                return True
+        if is_only(bottom_line, ['+', '=']):
+            return True
+
         return False
 
     def __lt__(self, other):

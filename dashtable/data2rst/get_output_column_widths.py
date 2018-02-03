@@ -1,6 +1,6 @@
 from ..dashutils import get_span
 from ..dashutils import get_span_column_count
-
+from ..dashutils import get_longest_line_length
 
 def get_output_column_widths(table, spans):
     """
@@ -33,7 +33,7 @@ def get_output_column_widths(table, spans):
 
                 text = table[text_row][text_column]
 
-                length = len(max(text.split('\n')))
+                length = get_longest_line_length(text)
                 if length > widths[column]:
                     widths[column] = length
 
@@ -54,7 +54,7 @@ def get_output_column_widths(table, spans):
                     widths[text_column:end_column])
                 available_space += column_count - 1
 
-                length = len(max(text.split('\n')))
+                length = get_longest_line_length(text)
 
                 while length > available_space:
                     for i in range(text_column, end_column):

@@ -4,7 +4,7 @@ from .data2rst import data2rst
 
 
 def html2rst(html_string, force_headers=False, center_cells=False,
-             center_headers=False, use_pandoc=False):
+             center_headers=False):
     """
     Convert a string or html file to an rst table string.
 
@@ -19,11 +19,6 @@ def html2rst(html_string, force_headers=False, center_cells=False,
         Whether or not to center the contents of the cells
     center_headers : bool
         Whether or not to center the contents of the header cells
-    use_pandoc : book
-        Whether or not to use pandoc_ to convert table cell contents into
-        rst before including them into the rst grid table. This is
-        slower, but accurate. Note that using this option will require
-        you to have pandoc_ installed.
 
     Returns
     -------
@@ -68,7 +63,7 @@ def html2rst(html_string, force_headers=False, center_cells=False,
     ... </table>
     ... '''
     >>> import dashtable
-    >>> print(dashtable.html2rst(html_text, use_pandoc=True))
+    >>> print(dashtable.html2rst(html_text))
     +---------------------+----------------+--------------+
     | Header 1            | Header 2       | Header 3     |
     +=====================+================+==============+
@@ -76,7 +71,6 @@ def html2rst(html_string, force_headers=False, center_cells=False,
     |                     | -  List item 2 | #. Ordered 2 |
     +---------------------+----------------+--------------+
 
-    .. _pandoc: https://pandoc.org/
     .. _BeautifulSoup: https://www.crummy.com/software/BeautifulSoup/
     """
 
@@ -87,11 +81,11 @@ def html2rst(html_string, force_headers=False, center_cells=False,
         html_string = ''.join(lines)
 
     table_data, spans, use_headers = html2data(
-        html_string, use_pandoc=use_pandoc)
+        html_string)
 
     if table_data == '':
         return ''
     if force_headers:
         use_headers = True
 
-    return data2rst(table_data, spans, use_headers, center_cells)
+    return data2rst(table_data, spans, use_headers, center_cells, center_headers)
