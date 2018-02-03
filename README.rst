@@ -3,7 +3,8 @@ DashTable
 =========
 dashtable has functions for converting data to reStructuredText
 tables and Markdown tables, as well as methods for generating data from
-these text-tables.
+these text-tables. It can quickly convert html tables to rst, but you
+may have better results with pandoc.
 
 Methods
 =======
@@ -50,3 +51,5 @@ Usage
 Complete documentation on usage can be found on `Read the Docs`_.
 
 .. _Read the Docs: http://dashtable.readthedocs.io/en/latest/Code.html
+
+.. note:: test
