@@ -51,5 +51,3 @@ Usage
 Complete documentation on usage can be found on `Read the Docs`_.
 
 .. _Read the Docs: http://dashtable.readthedocs.io/en/latest/Code.html
-
-.. note:: test
