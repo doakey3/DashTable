@@ -24,8 +24,8 @@ def center_line(space, line):
     left_length = math.floor((space - len(line)) / 2)
     right_length = math.ceil((space - len(line)) / 2)
 
-    left_space = " " * left_length
-    right_space = " " * right_length
+    left_space = " " * int(left_length)
+    right_space = " " * int(right_length)
 
     line = ''.join([left_space, line, right_space])
 

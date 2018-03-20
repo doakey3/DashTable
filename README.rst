@@ -12,7 +12,6 @@ Methods
 :html2md:        Convert html table to Markdown table
 :data2md:        Convert a list of lists of strings to Markdown Table
 :data2rst:       Convert a list of lists of strings to `RST grid Table`_
-:data2md:        Convert a list of lists of strings to a Markdown Table
 :data2simplerst: Convert a list of lists of strings to a `simple RST
                  Table`_
 :grid2data:      Convert an `RST grid table`_ to data
