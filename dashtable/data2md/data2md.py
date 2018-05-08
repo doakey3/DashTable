@@ -5,6 +5,7 @@ from ..dashutils import add_cushions
 from ..dashutils import multis_2_mono
 from ..dashutils import ensure_table_strings
 
+import copy
 
 def data2md(table):
     """
@@ -35,6 +36,9 @@ def data2md(table):
     |   Dog   | Awesome  |
     |   Cat   |   Meh    |
     """
+
+    table = copy.deepcopy(table)
+
     table = ensure_table_strings(table)
     table = multis_2_mono(table)
     table = add_cushions(table)

@@ -8,8 +8,9 @@ from ..dashutils.get_span import get_span
 
 from .row_includes_spans import row_includes_spans
 
+import copy
 
-def data2simplerst(table, spans=[[[]]], use_headers=True, headers_row=0):
+def data2simplerst(table, spans=[[[0, 0]]], use_headers=True, headers_row=0):
     """
     Convert table data to a simple rst table
 
@@ -57,14 +58,18 @@ def data2simplerst(table, spans=[[[]]], use_headers=True, headers_row=0):
      True   True    True
     ======  =====  ======
     """
+
+    table = copy.deepcopy(table)
+
     table_ok = check_table(table)
     if not table_ok == "":
         return "ERROR: " + table_ok
 
-    for span in spans:
-        span_ok = check_span(span, table)
-        if not span_ok == "":
-            return "ERROR: " + span_ok
+    if not spans == [[[0, 0]]]:
+        for span in spans:
+            span_ok = check_span(span, table)
+            if not span_ok == "":
+                return "ERROR: " + span_ok
 
     table = ensure_table_strings(table)
     table = multis_2_mono(table)

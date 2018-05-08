@@ -13,8 +13,10 @@ from .merge_all_cells import merge_all_cells
 from .cell import center_cell_text
 from .cell import v_center_cell_text
 
+import copy
 
-def data2rst(table, spans=[[[]]], use_headers=True,
+
+def data2rst(table, spans=[[[0, 0]]], use_headers=True,
              center_cells=False, center_headers=False):
     """
     Convert a list of lists of str into a reStructuredText Grid Table
@@ -73,14 +75,17 @@ def data2rst(table, spans=[[[]]], use_headers=True,
     +------------+------------+-----------+
     """
 
+    table = copy.deepcopy(table)
+
     table_ok = check_table(table)
     if not table_ok == "":
         return "ERROR: " + table_ok
 
-    for span in spans:
-        span_ok = check_span(span, table)
-        if not span_ok == "":
-            return "ERROR: " + span_ok
+    if not spans == [[[0, 0]]]:
+        for span in spans:
+            span_ok = check_span(span, table)
+            if not span_ok == "":
+                return "ERROR: " + span_ok
 
     table = ensure_table_strings(table)
     table = add_cushions(table)
