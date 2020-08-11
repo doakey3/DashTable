@@ -1,5 +1,7 @@
 import math
 
+from wcwidth import wcswidth
+
 
 def v_center_cell_text(cell):
     """
@@ -24,7 +26,7 @@ def v_center_cell_text(cell):
     cell : dashtable.data2rst.Cell
     """
     lines = cell.text.split('\n')
-    cell_width = len(lines[0]) - 2
+    cell_width = wcswidth(lines[0]) - 2
 
     truncated_lines = []
     for i in range(1, len(lines) - 1):

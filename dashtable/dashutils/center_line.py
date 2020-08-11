@@ -1,5 +1,7 @@
 import math
 
+from wcwidth import wcswidth
+
 
 def center_line(space, line):
     """
@@ -21,8 +23,8 @@ def center_line(space, line):
     """
     line = line.strip()
 
-    left_length = math.floor((space - len(line)) / 2)
-    right_length = math.ceil((space - len(line)) / 2)
+    left_length = math.floor((space - wcswidth(line)) / 2)
+    right_length = math.ceil((space - wcswidth(line)) / 2)
 
     left_space = " " * int(left_length)
     right_space = " " * int(right_length)

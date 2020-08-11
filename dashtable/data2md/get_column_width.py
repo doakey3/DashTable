@@ -1,3 +1,6 @@
+from wcwidth import wcswidth
+
+
 def get_column_width(column, table):
     """
     Get the character width of a column in a table
@@ -17,7 +20,7 @@ def get_column_width(column, table):
     width = 3
 
     for row in range(len(table)):
-        cell_width = len(table[row][column])
+        cell_width = wcswidth(table[row][column])
         if cell_width > width:
             width = cell_width
 

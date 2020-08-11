@@ -1,3 +1,6 @@
+from wcwidth import wcswidth
+
+
 def get_bullet_depth(element):
     depth = -1
     while element:
@@ -21,7 +24,7 @@ def convert_li(element, text):
         for i in range(len(children)):
             if parent.index(children[i]) == index:
                 number = str(i + 1)
-                interspace = (space - len(number)) * ' '
+                interspace = (space - wcswidth(number)) * ' '
                 text = number + '.' + interspace + text
 
         depth = get_bullet_depth(element)
