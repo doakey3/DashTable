@@ -23,4 +23,5 @@ setup(
     url='https://github.com/doakey3/DashTable',
     download_url='https://github.com/doakey3/DashTable/tarball/1.4.5',
     license='MIT',
+    install_requires=['wcwidth'],
 )

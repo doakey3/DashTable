@@ -1,3 +1,5 @@
+from wcwidth import wcswidth
+
 from ..dashutils import get_span_char_width
 from ..dashutils import get_span_char_height
 from ..dashutils import get_span_row_count
@@ -35,7 +37,7 @@ def make_cell(table, span, widths, heights, use_headers):
 
     lines = text.split("\n")
     for i in range(len(lines)):
-        width_difference = width - len(lines[i])
+        width_difference = width - wcswidth(lines[i])
         lines[i] = ''.join([lines[i], " " * width_difference])
 
     height_difference = height - len(lines)

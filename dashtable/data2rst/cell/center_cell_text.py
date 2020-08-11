@@ -1,4 +1,7 @@
 import math
+
+from wcwidth import wcswidth
+
 from .get_longest_line_length import get_longest_line_length
 
 def center_cell_text(cell):
@@ -20,7 +23,7 @@ def center_cell_text(cell):
     cell : dashtable.data2rst.Cell
     """
     lines = cell.text.split('\n')
-    cell_width = len(lines[0]) - 2
+    cell_width = wcswidth(lines[0]) - 2
 
     truncated_lines = ['']
     for i in range(1, len(lines) - 1):
@@ -37,7 +40,7 @@ def center_cell_text(cell):
 
     for i in range(len(truncated_lines)):
         truncated_lines[i] = left_space + truncated_lines[i]
-        right_width = cell_width - len(truncated_lines[i])
+        right_width = cell_width - wcswidth(truncated_lines[i])
         truncated_lines[i] += right_width * ' '
 
     for i in range(1, len(lines) - 1):
