@@ -25,7 +25,8 @@ def merge_cells(cell1, cell2, direction):
 
     if direction == "RIGHT":
         for i in range(len(cell1_lines)):
-            cell1_lines[i] = cell1_lines[i] + cell2_lines[i][1::]
+            #cell1_lines[i] = cell1_lines[i] + cell2_lines[i][1::]
+            cell1_lines[i] = merge_line(cell1_lines[i], cell2_lines[i])
         cell1.text = "\n".join(cell1_lines)
         cell1.column_count += cell2.column_count
 
@@ -52,10 +53,19 @@ def merge_cells(cell1, cell2, direction):
 
     elif direction == "LEFT":
         for i in range(len(cell1_lines)):
-            cell1_lines[i] = cell2_lines[i][0:-1] + cell1_lines[i]
+            #cell1_lines[i] = cell2_lines[i][0:-1] + cell1_lines[i]
+            cell1_lines[i] = merge_line(cell2_lines[i], cell2_lines[i])
         cell1.text = "\n".join(cell1_lines)
         cell1.column_count += cell2.column_count
         cell1.row = cell2.row
         cell1.column = cell2.column
 
 
+def merge_line(line1, line2):
+    line1_last_chr = line1[-1]
+    line2_first_chr = line2[0]
+    if '+' in [line1_last_chr, line2_first_chr]:
+        middle_chr = '+'
+    else:
+        middle_chr = line1_last_chr
+    return line1[:-1] + middle_chr + line2[1:]
